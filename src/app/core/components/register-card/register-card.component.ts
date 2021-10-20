@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { toastController } from '@ionic/core';
 import { TopbarService } from 'src/app/services/topbar.service';
@@ -44,6 +45,7 @@ export class RegisterCardComponent implements OnInit {
     private userService: UserService,
     private loadingController: LoadingController,
     private topbarService: TopbarService,
+    private router: Router,
   ) { }
 
   @HostListener('window:resize')
@@ -81,6 +83,9 @@ export class RegisterCardComponent implements OnInit {
         color: 'success'
       });
       t.present();
+
+      this.router.navigate(['/external/login']);
+
     } catch (error) {
       loading.dismiss();
       const t = await toastController.create({
