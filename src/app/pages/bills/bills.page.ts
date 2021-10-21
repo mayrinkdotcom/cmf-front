@@ -29,8 +29,7 @@ export class BillsPage implements OnInit {
     },
   );
 
-  transactionModal: HTMLElement;
-  transactionModal1: HTMLElement;
+  modalToToggle: HTMLElement;
   newTransaction: Transaction = DEFAULT_TRANSACTION;
 
   availableProducts: ProductResponse[];
@@ -52,8 +51,7 @@ export class BillsPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.transactionModal = document.getElementById('add-transaction');
-    this.transactionModal1 = document.getElementById('add-transaction1');
+    this.modalToToggle = document.getElementById('add-transaction');
     this.checkUserLogged();
 
     this.availableProducts = await this.productService.getAvailableProducts();
@@ -65,15 +63,12 @@ export class BillsPage implements OnInit {
     }
   }
 
-  toggleTransactionModal() {
-    this.transactionModal.classList.toggle('hidden');
-    if (this.transactionModal.classList.contains('hidden')) {
+  toggleModalVisibility(id: string) {
+    this.modalToToggle = document.getElementById(id);
+    this.modalToToggle?.classList.toggle('hidden');
+    if (this.modalToToggle?.classList.contains('hidden')) {
       this.addTransaction.reset();
     }
-  }
-
-  toggleTransactionModal1() {
-    this.transactionModal1.classList.toggle('hidden');
   }
 
 
