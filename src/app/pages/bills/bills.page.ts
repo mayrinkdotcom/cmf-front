@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
+import { BillsService } from 'src/app/services/bills.service';
 import { ProductService } from 'src/app/services/product.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
@@ -48,6 +49,7 @@ export class BillsPage implements OnInit {
     private transactionService: TransactionService,
     private userService: UserService,
     private productService: ProductService,
+    private billsService: BillsService,
   ) { }
 
   async ngOnInit() {
@@ -115,6 +117,15 @@ export class BillsPage implements OnInit {
       });
       t.present();
       console.error('🚀 -> BillsPage -> onAddTransaction -> error', error);
+      throw error;
+    }
+  }
+
+  async onAddBill(): Promise<void> {
+    try {
+      const res = await this.billsService.createBill('criando nova conta');
+    } catch (error) {
+      console.error('ERROR on onAddBill: ', error);
       throw error;
     }
   }
