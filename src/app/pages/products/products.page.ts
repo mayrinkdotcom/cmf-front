@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
+import { TopbarService } from 'src/app/services/topbar.service';
 import { DEFAULT_PRODUCT, Product, ProductResponse } from 'src/app/types/Product';
 
 @Component({
@@ -18,6 +19,7 @@ export class ProductsPage implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private topbarService: TopbarService,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private alertController: AlertController,
@@ -25,6 +27,7 @@ export class ProductsPage implements OnInit {
 
   async ngOnInit() {
     this.refreshAvailableProducts();
+    this.topbarService.configBackButton(true, '/home');
   }
 
   async onClickAddProduct() {
