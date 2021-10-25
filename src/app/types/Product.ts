@@ -6,3 +6,9 @@ export interface Product {
 export interface ProductResponse extends Product {
     idProduto: number;
 }
+
+export const DEFAULT_PRODUCT: ProductResponse = {
+    nome: 'Produto',
+    quantidade: 0,
+    idProduto: 0,
+};
