@@ -8,11 +8,15 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
+  constructor(private router: Router,) { }
+
   gastos(){
     this.router.navigate(['/bills']);
   }
 
-  constructor(private router: Router,) { }
+  goTo(path: string) {
+    this.router.navigate([path]);
+  }
 
   ngOnInit() {
   }
