@@ -56,7 +56,7 @@ export class BillsPage implements OnInit {
     this.transactionModal1 = document.getElementById('add-transaction1');
     this.checkUserLogged();
 
-    this.availableProducts = await this.productService.getAvailableProducts();
+    this.refreshAvailableProducts();
   }
 
   checkUserLogged() {
@@ -127,6 +127,11 @@ export class BillsPage implements OnInit {
   preventDefault($event) {
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  async refreshAvailableProducts() {
+    const productsUnordered = await this.productService.getAvailableProducts();
+    this.availableProducts = productsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 }
 
