@@ -12,18 +12,9 @@ export class BillsService {
     private httpClient: HttpClient,
   ) { }
 
-  async createBill(params: any): Promise<BillResponse> {
-    console.log('Not implemented yet');
-    console.log('🚀 -> BillsService -> createBill -> params', params);
-
+  async createBill(params: Bill): Promise<BillResponse> {
     const url = `${environment.BASE_URL}/conta/cadastrar`;
-    const body = {
-      dataVencimento: params.vencimento,
-      idUsuario: params.id,
-      receberNotificacao: params.checkbox,
-      tipoConta: params.descricao,
-      valorConta: params.valor
-    };
+    const body: Bill = params;
 
     try {
       console.log(body);
@@ -33,10 +24,27 @@ export class BillsService {
 
       return response;
     } catch (error) {
-      console.error('ERROR on createBill: ', error);
+      this.logError(error);
       throw error;
     }
+  }
 
+  async getAllUserBills(userId: number): Promise<BillResponse[]> {
+    const url = `${environment.BASE_URL}/conta/buscar-por-usuario/{usuarioId}?usuarioId=${userId}`;
+
+    try {
+      const response = await this.httpClient
+        .get<BillResponse[]>(url)
+        .toPromise();
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+
+  logError(error: Error) {
+    console.error('ERROR on bills-service:', error);
   }
 
 }
