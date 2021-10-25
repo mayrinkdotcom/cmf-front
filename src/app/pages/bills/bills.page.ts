@@ -129,10 +129,36 @@ export class BillsPage implements OnInit {
   lembreteHoras: number;
 
   async onAddBill(): Promise<void> {
+<<<<<<< HEAD
     console.log('ceguei')
     try {
       const res = await this.billsService.createBill('teste');
+=======
+    const l = await this.loadingController.create({
+      message: 'Adicionando conta...',
+    });
+    l.present();
+    try {
+      const res = await this.billsService.createBill('criando nova conta');
+      console.log('🚀 -> BillsPage -> onAddBill -> res', res);
+      l.dismiss();
+
+      const t = await this.toastController.create({
+        message: 'Conta criada com sucesso!',
+        duration: 4000,
+        color: 'success',
+      });
+      t.present();
+>>>>>>> 03fe1246fdaaa09ddb0fffc7cab07651d20e6e58
     } catch (error) {
+      l.dismiss();
+
+      const t = await this.toastController.create({
+        message: 'Falha na criação da conta, por favor verifique os dados e tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
       console.error('ERROR on onAddBill: ', error);
       throw error;
     }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
+import { Bill, BillResponse } from '../types/Bill';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class BillsService {
     private httpClient: HttpClient,
   ) { }
 
-  async createBill(params: any): Promise<any> {
+  async createBill(params: any): Promise<BillResponse> {
     console.log('Not implemented yet');
     console.log('🚀 -> BillsService -> createBill -> params', params);
 
@@ -27,7 +28,7 @@ export class BillsService {
     try {
       console.log(body);
       const response = await this.httpClient
-        .post<any>(url, body)
+        .post<BillResponse>(url, body)
         .toPromise();
 
       return response;
