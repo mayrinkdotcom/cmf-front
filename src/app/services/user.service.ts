@@ -76,6 +76,13 @@ export class UserService {
     }
   }
 
+  getLoggedUser(): UserResponse {
+    const user: UserResponse = JSON.parse(window.localStorage.getItem('loggedUser'));
+    if (!!user) {
+      return user;
+    }
+  }
+
   logError(error: Error) {
     console.error('ERROR on user-service:', error);
   }
