@@ -129,17 +129,18 @@ export class BillsPage implements OnInit {
   lembreteHoras: number;
 
   async onAddBill(): Promise<void> {
-<<<<<<< HEAD
-    console.log('ceguei')
-    try {
-      const res = await this.billsService.createBill('teste');
-=======
     const l = await this.loadingController.create({
       message: 'Adicionando conta...',
     });
     l.present();
     try {
-      const res = await this.billsService.createBill('criando nova conta');
+      const Bill = {
+              descricao: this.descricao,
+              vencimento: this.vencimento,
+              valor: this.valor
+            };
+
+      const res = await this.billsService.createBill(Bill);
       console.log('🚀 -> BillsPage -> onAddBill -> res', res);
       l.dismiss();
 
@@ -149,7 +150,6 @@ export class BillsPage implements OnInit {
         color: 'success',
       });
       t.present();
->>>>>>> 03fe1246fdaaa09ddb0fffc7cab07651d20e6e58
     } catch (error) {
       l.dismiss();
 
@@ -163,25 +163,6 @@ export class BillsPage implements OnInit {
       throw error;
     }
   }
-
-  // descricao: String;
-  // vencimento: Date;
-  // valor: number;
-  // lembreteDias: number;
-  // lembreteHoras: number;
-   async saveBill(): Promise<void>{
-     const Bill = {
-       descricao: this.descricao,
-       vencimento: this.vencimento,
-       valor: this.valor
-     }
-     try {
-      const res = await this.billsService.createBill(Bill);
-    } catch (error) {
-      console.error('ERROR on onAddBill: ', error);
-      throw error;
-    }
-   }
 
   preventDefault($event) {
     $event.preventDefault();
