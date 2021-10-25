@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { TopbarService } from 'src/app/services/topbar.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,10 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  constructor(private router: Router,) { }
+  constructor(
+    private router: Router,
+    private topbarService: TopbarService,
+    ) { }
 
   gastos(){
     this.router.navigate(['/bills']);
@@ -19,6 +23,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    this.topbarService.configBackButton(false);
   }
 
 }
