@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { TopbarService } from 'src/app/services/topbar.service';
@@ -9,13 +9,9 @@ import { DEFAULT_PRODUCT, Product, ProductResponse } from 'src/app/types/Product
   templateUrl: './products.page.html',
   styleUrls: ['./products.page.scss'],
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage implements OnInit, AfterViewInit {
 
-  availableProducts: ProductResponse[] = [
-    DEFAULT_PRODUCT,
-    DEFAULT_PRODUCT,
-    DEFAULT_PRODUCT
-  ];
+  availableProducts: ProductResponse[] = [];
 
   constructor(
     private productService: ProductService,
@@ -25,9 +21,12 @@ export class ProductsPage implements OnInit {
     private alertController: AlertController,
   ) { }
 
-  async ngOnInit() {
-    this.refreshAvailableProducts();
+  ngOnInit() {
     this.topbarService.configBackButton(true, '/home');
+  }
+
+  ngAfterViewInit() {
+    this.refreshAvailableProducts();
   }
 
   async onClickAddProduct() {
@@ -50,9 +49,13 @@ export class ProductsPage implements OnInit {
       ],
       buttons: [
         {
+          text: 'Cancelar',
+          handler: () => alert.dismiss(),
+        },
+        {
           text: 'Adicionar',
           handler: (inputs) => this.saveProduct(inputs),
-        }
+        },
       ]
     });
 
