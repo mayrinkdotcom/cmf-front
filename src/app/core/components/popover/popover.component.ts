@@ -38,4 +38,8 @@ export class PopoverComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onClickOpenNotification() {
+    console.log('Not implemented yet');
+  }
+
 }

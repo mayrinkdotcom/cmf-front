@@ -6,6 +6,9 @@
     <ion-spinner name="circular"></ion-spinner>
   </ion-item>
   <ion-item *ngFor="let notification of notificationsList">
-    <ion-label>{{ notification }}</ion-label>
+    <ion-button (click)="onClickOpenNotification()" class="notification-item">
+      <ion-icon slot="start" name="newspaper"></ion-icon>
+      <ion-label>{{ notification }}</ion-label>
+    </ion-button>
   </ion-item>
 </ion-list>
