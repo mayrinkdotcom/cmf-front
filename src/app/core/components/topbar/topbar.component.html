@@ -3,4 +3,10 @@
     <ion-back-button defaultHref="/"></ion-back-button>
   </ion-buttons>
   <ion-title>{{ topbarTitle }}</ion-title>
+  <ion-buttons slot="end" *ngIf="userLogged">
+    <ion-button (click)="onClickNotifications()">
+      <ion-icon name="notifications-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <app-notification style="position: absolute; top: 16px; right: 16px;" *ngIf="notificationsOpened"></app-notification>
 </ion-toolbar>
