@@ -134,10 +134,14 @@ export class BillsPage implements OnInit {
     });
     l.present();
     try {
+      const idUsuario = this.userService.getLoggedUser().idUsuario;
+      console.log('usuário');
+      console.log(idUsuario);
       const Bill = {
               descricao: this.descricao,
               vencimento: this.vencimento,
-              valor: this.valor
+              valor: this.valor,
+              id: idUsuario
             };
 
       const res = await this.billsService.createBill(Bill);

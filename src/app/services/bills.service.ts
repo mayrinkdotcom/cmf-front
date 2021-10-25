@@ -19,7 +19,7 @@ export class BillsService {
     const url = `${environment.BASE_URL}/conta/cadastrar`;
     const body = {
       dataVencimento: params.vencimento,
-      idUsuario: 3,
+      idUsuario: params.id,
       receberNotificacao: true,
       tipoConta: params.descricao,
       valorConta: params.valor
