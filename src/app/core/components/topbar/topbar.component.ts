@@ -38,7 +38,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(obs);
 
-    this.userLogged = !!window.localStorage.getItem('userLogged');
+    this.userLogged = !!window.localStorage.getItem('loggedUser');
   }
 
   ngOnDestroy() {
