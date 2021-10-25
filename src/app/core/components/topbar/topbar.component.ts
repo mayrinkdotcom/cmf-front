@@ -23,7 +23,6 @@ export class TopbarComponent implements OnInit, OnDestroy {
     path: '',
   };
 
-  notificationsOpened = false;
   userLogged = false;
 
   constructor(
@@ -46,10 +45,6 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(e => {
       e.unsubscribe();
     });
-  }
-
-  onClickNotifications() {
-    this.notificationsOpened = !this.notificationsOpened;
   }
 
 }

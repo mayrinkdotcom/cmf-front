@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginCardComponent } from './login-card/login-card.component';
 import { TopbarComponent } from './topbar/topbar.component';
 import { NotificationComponent } from './notification/notification.component';
+import { PopoverComponent } from './popover/popover.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { NotificationComponent } from './notification/notification.component';
     LoginCardComponent,
     TopbarComponent,
     NotificationComponent,
+    PopoverComponent,
   ],
   imports: [CommonModule, IonicModule, ReactiveFormsModule],
   exports: [RegisterCardComponent, TopbarComponent],
