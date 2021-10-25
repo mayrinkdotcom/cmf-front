@@ -60,7 +60,7 @@ export class BillsPage implements OnInit {
   }
 
   checkUserLogged() {
-    if (window.localStorage.getItem('userLogged') !== 'true') {
+    if (!window.localStorage.getItem('loggedUser')) {
       this.router.navigate(['external/login']);
     }
   }
