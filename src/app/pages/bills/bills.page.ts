@@ -125,8 +125,7 @@ export class BillsPage implements OnInit {
   descricao: String;
   vencimento: Date;
   valor: number;
-  lembreteDias: number;
-  lembreteHoras: number;
+  checkbox: boolean;
 
   async onAddBill(): Promise<void> {
     const l = await this.loadingController.create({
@@ -141,7 +140,8 @@ export class BillsPage implements OnInit {
               descricao: this.descricao,
               vencimento: this.vencimento,
               valor: this.valor,
-              id: idUsuario
+              id: idUsuario,
+              checkbox: this.checkbox
             };
 
       const res = await this.billsService.createBill(Bill);

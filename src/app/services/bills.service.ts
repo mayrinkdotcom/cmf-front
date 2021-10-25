@@ -20,7 +20,7 @@ export class BillsService {
     const body = {
       dataVencimento: params.vencimento,
       idUsuario: params.id,
-      receberNotificacao: true,
+      receberNotificacao: params.checkbox,
       tipoConta: params.descricao,
       valorConta: params.valor
     };
