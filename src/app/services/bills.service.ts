@@ -17,14 +17,15 @@ export class BillsService {
 
     const url = `${environment.BASE_URL}/conta/cadastrar`;
     const body = {
-      dataVencimento: '2021-10-21',
+      dataVencimento: params.vencimento,
       idUsuario: 3,
       receberNotificacao: true,
-      tipoConta: 'abcde',
-      valorConta: 10
+      tipoConta: params.descricao,
+      valorConta: params.valor
     };
 
     try {
+      console.log(body);
       const response = await this.httpClient
         .post<any>(url, body)
         .toPromise();

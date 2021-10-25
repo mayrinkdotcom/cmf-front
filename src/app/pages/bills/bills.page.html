@@ -128,23 +128,23 @@
       </ion-label>
     </ion-card-title>
     <ion-card-content>
-      <form [formGroup]="">
+      <form (ngSubmit)="onAddBill()">
         <ion-grid fixed>
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Descrição: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" required type="ion-text"></ion-input>
+              <ion-input name="descricao" class="light-input" required type="ion-text" [(ngModel)]="descricao"></ion-input>
             </ion-col>
             <ion-col size="6">
               <ion-label position="floating">Data de vencimento da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" required type="date"></ion-input>
+              <ion-input name="vencimento" class="light-input" required type="date" [(ngModel)]="vencimento"></ion-input>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Valor da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" placeholder="R$" type="number" required ></ion-input>
+              <ion-input name="Valor" class="light-input" placeholder="R$" type="number" required [(ngModel)]="valor"></ion-input>
             </ion-col>
           </ion-row>
 
@@ -156,22 +156,11 @@
           </ion-row>
 
           <ion-row>
-            <ion-col syze="6">
-              <ion-label position="floating">Lembrete(dias):</ion-label>
-              <ion-input class="light-input" type="number"></ion-input>
-            </ion-col>
-            <ion-col syze="6">
-              <ion-label position="floating">Lembrete(horas):</ion-label>
-              <ion-input class="light-input" type="number"></ion-input>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
             <ion-col size="12">
               <ion-button block color="light" (click)="toggleModalVisibility('add-bill')">
                 Cancelar
               </ion-button>
-              <ion-button block color="secondary" type="submit" (click)="onAddBill()" [disabled]="false">
+              <ion-button block color="secondary" type="submit" (click)="saveBill()" [disabled]="false">
                 Confirmar
               </ion-button>
             </ion-col>

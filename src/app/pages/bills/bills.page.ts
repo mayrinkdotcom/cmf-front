@@ -14,6 +14,7 @@ import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
   templateUrl: './bills.page.html',
   styleUrls: ['./bills.page.scss'],
 })
+
 export class BillsPage implements OnInit {
 
   addTransaction: FormGroup = new FormGroup(
@@ -121,14 +122,40 @@ export class BillsPage implements OnInit {
     }
   }
 
+  descricao: String;
+  vencimento: Date;
+  valor: number;
+  lembreteDias: number;
+  lembreteHoras: number;
+
   async onAddBill(): Promise<void> {
+    console.log('ceguei')
     try {
-      const res = await this.billsService.createBill('criando nova conta');
+      const res = await this.billsService.createBill('teste');
     } catch (error) {
       console.error('ERROR on onAddBill: ', error);
       throw error;
     }
   }
+
+  // descricao: String;
+  // vencimento: Date;
+  // valor: number;
+  // lembreteDias: number;
+  // lembreteHoras: number;
+   async saveBill(): Promise<void>{
+     const Bill = {
+       descricao: this.descricao,
+       vencimento: this.vencimento,
+       valor: this.valor
+     }
+     try {
+      const res = await this.billsService.createBill(Bill);
+    } catch (error) {
+      console.error('ERROR on onAddBill: ', error);
+      throw error;
+    }
+   }
 
   preventDefault($event) {
     $event.preventDefault();
