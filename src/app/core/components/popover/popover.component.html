@@ -8,7 +8,11 @@
   <ion-item *ngFor="let notification of notificationsList">
     <ion-button (click)="onClickOpenNotification()" class="notification-item">
       <ion-icon slot="start" name="newspaper"></ion-icon>
-      <ion-label>{{ notification }}</ion-label>
+      <ion-label>Conta: {{ notification.idConta }}</ion-label>
+      <ion-label>Lembrete em: {{ notification.dataLembrete }}</ion-label>
     </ion-button>
+  </ion-item>
+  <ion-item *ngIf="!loading && notificationsList.length === 0">
+    <ion-label>Sem notificações no momento!</ion-label>
   </ion-item>
 </ion-list>
