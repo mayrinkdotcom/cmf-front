@@ -57,11 +57,11 @@ export class BillsPage implements OnInit {
     this.modalToToggle = document.getElementById('add-transaction');
     this.checkUserLogged();
 
-    this.availableProducts = await this.productService.getAvailableProducts();
+    this.refreshAvailableProducts();
   }
 
   checkUserLogged() {
-    if (window.localStorage.getItem('userLogged') !== 'true') {
+    if (!window.localStorage.getItem('loggedUser')) {
       this.router.navigate(['external/login']);
     }
   }
@@ -167,6 +167,11 @@ export class BillsPage implements OnInit {
   preventDefault($event) {
     $event.preventDefault();
     $event.stopPropagation();
+  }
+
+  async refreshAvailableProducts() {
+    const productsUnordered = await this.productService.getAvailableProducts();
+    this.availableProducts = productsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 }
 

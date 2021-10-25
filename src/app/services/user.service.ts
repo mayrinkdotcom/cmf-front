@@ -47,6 +47,10 @@ export class UserService {
         .toPromise();
 
       console.log('🚀 -> UserService -> login -> response', response);
+      if (!!response) {
+        const user = await this.getUserByEmail(email);
+        window.localStorage.setItem('loggedUser', JSON.stringify(user));
+      }
     } catch (error) {
       if (error.status === 404) {
         response = false;
@@ -55,7 +59,6 @@ export class UserService {
         throw error;
       }
     }
-    window.localStorage.setItem('userLogged', response.toString());
     return response;
   }
 
@@ -70,6 +73,13 @@ export class UserService {
     } catch (error) {
       this.logError(error);
       throw error;
+    }
+  }
+
+  getLoggedUser(): UserResponse {
+    const user: UserResponse = JSON.parse(window.localStorage.getItem('loggedUser'));
+    if (!!user) {
+      return user;
     }
   }
 
