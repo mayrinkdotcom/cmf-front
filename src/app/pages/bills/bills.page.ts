@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
+import { BillsService } from 'src/app/services/bills.service';
 import { ProductService } from 'src/app/services/product.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
@@ -13,6 +14,7 @@ import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
   templateUrl: './bills.page.html',
   styleUrls: ['./bills.page.scss'],
 })
+
 export class BillsPage implements OnInit {
 
   addTransaction: FormGroup = new FormGroup(
@@ -29,8 +31,7 @@ export class BillsPage implements OnInit {
     },
   );
 
-  transactionModal: HTMLElement;
-  transactionModal1: HTMLElement;
+  modalToToggle: HTMLElement;
   newTransaction: Transaction = DEFAULT_TRANSACTION;
 
   availableProducts: ProductResponse[];
@@ -49,11 +50,11 @@ export class BillsPage implements OnInit {
     private transactionService: TransactionService,
     private userService: UserService,
     private productService: ProductService,
+    private billsService: BillsService,
   ) { }
 
   async ngOnInit() {
-    this.transactionModal = document.getElementById('add-transaction');
-    this.transactionModal1 = document.getElementById('add-transaction1');
+    this.modalToToggle = document.getElementById('add-transaction');
     this.checkUserLogged();
 
     this.refreshAvailableProducts();
@@ -65,15 +66,12 @@ export class BillsPage implements OnInit {
     }
   }
 
-  toggleTransactionModal() {
-    this.transactionModal.classList.toggle('hidden');
-    if (this.transactionModal.classList.contains('hidden')) {
+  toggleModalVisibility(id: string) {
+    this.modalToToggle = document.getElementById(id);
+    this.modalToToggle?.classList.toggle('hidden');
+    if (this.modalToToggle?.classList.contains('hidden')) {
       this.addTransaction.reset();
     }
-  }
-
-  toggleTransactionModal1() {
-    this.transactionModal1.classList.toggle('hidden');
   }
 
 
@@ -120,6 +118,52 @@ export class BillsPage implements OnInit {
       });
       t.present();
       console.error('🚀 -> BillsPage -> onAddTransaction -> error', error);
+      throw error;
+    }
+  }
+
+  descricao: String;
+  vencimento: Date;
+  valor: number;
+  checkbox: boolean;
+
+  async onAddBill(): Promise<void> {
+    const l = await this.loadingController.create({
+      message: 'Adicionando conta...',
+    });
+    l.present();
+    try {
+      const idUsuario = this.userService.getLoggedUser().idUsuario;
+      console.log('usuário');
+      console.log(idUsuario);
+      const Bill = {
+              descricao: this.descricao,
+              vencimento: this.vencimento,
+              valor: this.valor,
+              id: idUsuario,
+              checkbox: this.checkbox
+            };
+
+      const res = await this.billsService.createBill(Bill);
+      console.log('🚀 -> BillsPage -> onAddBill -> res', res);
+      l.dismiss();
+
+      const t = await this.toastController.create({
+        message: 'Conta criada com sucesso!',
+        duration: 4000,
+        color: 'success',
+      });
+      t.present();
+    } catch (error) {
+      l.dismiss();
+
+      const t = await this.toastController.create({
+        message: 'Falha na criação da conta, por favor verifique os dados e tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.error('ERROR on onAddBill: ', error);
       throw error;
     }
   }

@@ -53,12 +53,12 @@ ion-checkbox {
     }
 }
 
-#add-transaction {
+.bills-modal {
     width: 100%;
     height: 100vh;
     background-color: black;
 
-    .add-transaction-card {
+    .modal-card {
         background-color: var(--ion-color-primary);
         color: black !important;
         padding: 16px;
@@ -67,19 +67,4 @@ ion-checkbox {
             margin: 32px;
         }
     }
-}
-#add-transaction1 {
-  width: 100%;
-  height: 100vh;
-  background-color: black;
-
-  .add-transaction-card {
-      background-color: var(--ion-color-primary);
-      color: black !important;
-      padding: 16px;
-      margin: 16px;
-      @media screen and (min-width: 768px) {
-          margin: 32px;
-      }
-  }
 }
