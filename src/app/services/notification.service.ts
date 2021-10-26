@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { NotificationResponse } from '../types/Notification';
+import { Notification, NotificationResponse } from '../types/Notification';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,20 @@ export class NotificationService {
       .get<NotificationResponse[]>(url)
       .toPromise();
     return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+
+  async createNotification(newNotification: Notification) {
+    const url = `${environment.BASE_URL}/notificacao/cadastrar`;
+    const body: Notification = newNotification;
+    try {
+      const response = await this.httpClient
+        .post<NotificationResponse>(url, body)
+        .toPromise();
+      return response;
     } catch (error) {
       this.logError(error);
       throw error;

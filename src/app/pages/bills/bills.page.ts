@@ -155,7 +155,9 @@ export class BillsPage implements OnInit {
       console.log('🚀 -> BillsPage -> onAddBill -> res', resBillCreated);
 
       if (this.checkbox) {
-        this.addNotification(resBillCreated.idConta);
+        const allBills = await this.getAllBills();
+        const createdBill = allBills.reverse()[0];
+        this.addNotification(createdBill.idConta);
       }
 
       l.dismiss();
@@ -188,6 +190,23 @@ export class BillsPage implements OnInit {
   async refreshAvailableProducts() {
     const productsUnordered = await this.productService.getAvailableProducts();
     this.availableProducts = productsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
+  }
+
+  async getAllBills() {
+    try {
+      const allBills = await this.billsService.getAllUserBills(this.userLogged.idUsuario);
+      console.log('🚀 -> BillsPage -> getAllBills -> allBills', allBills);
+      return allBills;
+    } catch (error) {
+      const t = await this.toastController.create({
+        message: 'Falha na requisição de contas do usuário, por favor tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.error('ERROR on getAllBills: ', error);
+      throw error;
+    }
   }
 
   async addNotification(idConta: number) {

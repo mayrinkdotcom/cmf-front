@@ -5,10 +5,10 @@
   <ion-item *ngIf="loading">
     <ion-spinner name="circular"></ion-spinner>
   </ion-item>
-  <ion-item *ngFor="let notification of notificationsList">
+  <ion-item *ngFor="let item of notificationsWithBills">
     <ion-button (click)="onClickOpenNotification()" class="notification-item">
       <ion-icon slot="start" name="newspaper"></ion-icon>
-      <ion-label>Conta: {{ notification.idConta }}</ion-label>
+      <ion-label>Conta: {{ item.relatedBill ? item.relatedBill.tipoConta : '-' }}</ion-label>
       <!-- <ion-label>Lembrete em: {{ notification.dataLembrete }}</ion-label> -->
     </ion-button>
   </ion-item>
