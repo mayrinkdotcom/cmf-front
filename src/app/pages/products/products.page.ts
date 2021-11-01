@@ -98,6 +98,10 @@ export class ProductsPage implements OnInit, AfterViewInit {
     console.log('Not implemented yet');
   }
 
+  deleteProduct() {
+    console.log('Not implemented yet');
+  }
+
   async refreshAvailableProducts() {
     const productsUnordered = await this.productService.getAvailableProducts();
     this.availableProducts = productsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
