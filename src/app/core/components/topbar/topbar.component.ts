@@ -23,6 +23,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
     path: '',
   };
 
+  userLogged = false;
 
   constructor(
     private topbarService: TopbarService,
@@ -36,6 +37,8 @@ export class TopbarComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     this.subscriptions.push(obs);
+
+    this.userLogged = !!window.localStorage.getItem('loggedUser');
   }
 
   ngOnDestroy() {

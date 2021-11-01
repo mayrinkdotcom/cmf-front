@@ -3,4 +3,5 @@
     <ion-back-button defaultHref="/"></ion-back-button>
   </ion-buttons>
   <ion-title>{{ topbarTitle }}</ion-title>
+  <app-notification slot="end" *ngIf="userLogged"></app-notification>
 </ion-toolbar>

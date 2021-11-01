@@ -3,11 +3,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
+import { NotificationService } from 'src/app/services/notification.service';
 import { ProductService } from 'src/app/services/product.service';
+import { TopbarService } from 'src/app/services/topbar.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
+import { Notification } from 'src/app/types/Notification';
 import { ProductResponse } from 'src/app/types/Product';
 import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
+import { UserResponse } from 'src/app/types/User';
 
 @Component({
   selector: 'app-bills',
@@ -43,6 +47,13 @@ export class BillsPage implements OnInit {
     total: 6
   };
 
+  descricao: string;
+  vencimento: Date;
+  valor: number;
+  checkbox: boolean;
+
+  userLogged: UserResponse;
+
   constructor(
     private router: Router,
     private loadingController: LoadingController,
@@ -51,6 +62,8 @@ export class BillsPage implements OnInit {
     private userService: UserService,
     private productService: ProductService,
     private billsService: BillsService,
+    private notificationService: NotificationService,
+    private topbarService: TopbarService,
   ) { }
 
   async ngOnInit() {
@@ -58,6 +71,8 @@ export class BillsPage implements OnInit {
     this.checkUserLogged();
 
     this.refreshAvailableProducts();
+    this.userLogged = this.userService.getLoggedUser();
+    this.topbarService.configBackButton(true, '/home');
   }
 
   checkUserLogged() {
@@ -122,30 +137,27 @@ export class BillsPage implements OnInit {
     }
   }
 
-  descricao: String;
-  vencimento: Date;
-  valor: number;
-  checkbox: boolean;
-
   async onAddBill(): Promise<void> {
     const l = await this.loadingController.create({
       message: 'Adicionando conta...',
     });
     l.present();
     try {
-      const idUsuario = this.userService.getLoggedUser().idUsuario;
-      console.log('usuário');
-      console.log(idUsuario);
-      const Bill = {
-              descricao: this.descricao,
-              vencimento: this.vencimento,
-              valor: this.valor,
-              id: idUsuario,
-              checkbox: this.checkbox
+      const bill = {
+              tipoConta: this.descricao,
+              dataVencimento: this.vencimento.toString(),
+              valorConta: this.valor,
+              idUsuario: this.userLogged.idUsuario,
+              receberNotificacao: !!this.checkbox
             };
 
-      const res = await this.billsService.createBill(Bill);
-      console.log('🚀 -> BillsPage -> onAddBill -> res', res);
+      const resBillCreated = await this.billsService.createBill(bill);
+      console.log('🚀 -> BillsPage -> onAddBill -> res', resBillCreated);
+
+      if (this.checkbox) {
+        this.addNotification(resBillCreated.idConta);
+      }
+
       l.dismiss();
 
       const t = await this.toastController.create({
@@ -176,6 +188,38 @@ export class BillsPage implements OnInit {
   async refreshAvailableProducts() {
     const productsUnordered = await this.productService.getAvailableProducts();
     this.availableProducts = productsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
+  }
+
+  async getAllBills() {
+    try {
+      const allBills = await this.billsService.getAllUserBills(this.userLogged.idUsuario);
+      console.log('🚀 -> BillsPage -> getAllBills -> allBills', allBills);
+      return allBills;
+    } catch (error) {
+      const t = await this.toastController.create({
+        message: 'Falha na requisição de contas do usuário, por favor tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.error('ERROR on getAllBills: ', error);
+      throw error;
+    }
+  }
+
+  async addNotification(idConta: number) {
+    try {
+      const newNotification: Notification = {
+        idConta,
+        idUsuario: this.userLogged.idUsuario,
+        dataLembrete: this.vencimento
+      };
+      const resNotificationCreated = await this.notificationService.createNotification(newNotification);
+      console.log('🚀 -> BillsPage -> addNotification -> resNotificationCreated', resNotificationCreated);
+    } catch (error) {
+      console.error('ERROR on addNotification', error);
+      throw error;
+    }
   }
 }
 
