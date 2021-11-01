@@ -39,7 +39,7 @@ export class PopoverComponent implements OnInit, AfterViewInit {
       const userBills = await this.billsService.getAllUserBills(userId);
 
       this.notificationsWithBills = this.notificationsList.map(notif => {
-        const relatedBill = userBills.filter(bill => bill.idConta === notif.idConta)[0];
+        const relatedBill = userBills.find(bill => bill.idConta === notif.idConta);
         return relatedBill ? {...notif, relatedBill} : notif;
       });
       console.log('🚀 -> PopoverComponent -> refreshNotificationsList -> this.notificationsWithBills', this.notificationsWithBills);

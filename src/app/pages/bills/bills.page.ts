@@ -155,9 +155,7 @@ export class BillsPage implements OnInit {
       console.log('🚀 -> BillsPage -> onAddBill -> res', resBillCreated);
 
       if (this.checkbox) {
-        const allBills = await this.getAllBills();
-        const createdBill = allBills.reverse()[0];
-        this.addNotification(createdBill.idConta);
+        this.addNotification(resBillCreated.idConta);
       }
 
       l.dismiss();
