@@ -30,7 +30,6 @@ export class ProductsPage implements OnInit, AfterViewInit {
   }
 
   async onClickAddProduct() {
-
     const alert = await this.alertController.create({
       header: 'Adicionar produto',
       inputs: [
@@ -94,12 +93,122 @@ export class ProductsPage implements OnInit, AfterViewInit {
     }
   }
 
-  editProduct() {
-    console.log('Not implemented yet');
+  async onEditProduct(item: ProductResponse) {
+    const alert = await this.alertController.create({
+      header: 'Editar produto',
+      inputs: [
+        {
+          label: 'Nome',
+          placeholder: 'Nome',
+          name: 'nome',
+          type: 'text',
+          value: item.nome,
+        },
+        {
+          label: 'Quant.',
+          placeholder: 'Quant.',
+          name: 'quantidade',
+          type: 'number',
+          value: item.quantidade,
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => alert.dismiss(),
+        },
+        {
+          text: 'Salvar',
+          handler: async (inputs) => {
+            const editedProduct: ProductResponse = {
+              idProduto: item.idProduto,
+              nome: inputs.nome,
+              quantidade: inputs.quantidade,
+            };
+            this.editProduct(editedProduct);
+          },
+        },
+      ]
+    });
+
+    alert.present();
   }
 
-  deleteProduct() {
-    console.log('Not implemented yet');
+  async editProduct(editedProduct: ProductResponse) {
+    const l = await this.loadingController.create({
+      message: 'Atualizando produto...',
+    });
+    l.present();
+    try {
+      const res = await this.productService.updateProduct(editedProduct);
+      l.dismiss();
+
+      const t = await this.toastController.create({
+        message: 'Produto atualizado com sucesso!',
+        duration: 4000,
+        color: 'success',
+      });
+      t.present();
+
+      this.refreshAvailableProducts();
+    } catch (error) {
+      l.dismiss();
+      const t = await this.toastController.create({
+        message: 'Falha na edição do produto, por favor verifique os dados e tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.log('🚀 -> ProductsPage -> onEditProduct -> error', error);
+      throw error;
+    }
+  }
+
+  async onDeleteProduct(item: ProductResponse) {
+    const alert = await this.alertController.create({
+      header: 'Atenção!',
+      message: 'Deseja realmente excluir ' + item.nome + '? Essa ação não pode ser desfeita!',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => alert.dismiss(),
+        },
+        {
+          text: 'Confirmar',
+          handler: () => this.deleteProduct(item.idProduto),
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  async deleteProduct(productId: number) {
+    const l = await this.loadingController.create({
+      message: 'Excluindo produto...',
+    });
+
+    l.present();
+    try {
+      const res = await this.productService.deleteProduct(productId);
+      l.dismiss();
+      this.refreshAvailableProducts();
+      const t = await this.toastController.create({
+        message: 'Produto excluído com sucesso!',
+        duration: 4000,
+        color: 'success',
+      });
+      t.present();
+    } catch (error) {
+      l.dismiss();
+      const t = await this.toastController.create({
+        message: 'Falha na edição do produto, por favor verifique os dados e tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.log('🚀 -> ProductsPage -> onDeleteProduct -> error', error);
+      throw error;
+    }
   }
 
   async refreshAvailableProducts() {
