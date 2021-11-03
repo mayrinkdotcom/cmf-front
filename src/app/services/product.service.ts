@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+
 import { Product, ProductResponse } from '../types/Product';
 
 @Injectable({
@@ -35,6 +36,38 @@ export class ProductService {
     try {
       const response = await this.http
       .post<ProductResponse>(url, body)
+      .toPromise();
+
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+
+  async updateProduct(editedProduct: Product) {
+    const url = `${environment.BASE_URL}/produto/atualizar`;
+
+    const body: Product = editedProduct;
+
+    try {
+      const response = await this.http
+      .put<ProductResponse>(url, body)
+      .toPromise();
+
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+
+  async deleteProduct(productId: number) {
+    const url = `${environment.BASE_URL}/produto/deletar/{id}?id=${productId}`;
+
+    try {
+      const response = await this.http
+      .delete<null>(url)
       .toPromise();
 
       return response;
