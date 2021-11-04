@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BillsService } from 'src/app/services/bills.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
@@ -9,7 +9,7 @@ import { NotificationResponse } from 'src/app/types/Notification';
   templateUrl: './popover.component.html',
   styleUrls: ['./popover.component.scss'],
 })
-export class PopoverComponent implements OnInit, AfterViewInit {
+export class PopoverComponent implements OnInit {
 
   notificationsList: NotificationResponse[] = [];
   notificationsWithBills = [];
@@ -26,9 +26,6 @@ export class PopoverComponent implements OnInit, AfterViewInit {
     this.refreshNotificationsList();
   }
 
-  ngAfterViewInit() {
-  }
-
   async refreshNotificationsList() {
     this.loading = true;
     try {
@@ -36,12 +33,16 @@ export class PopoverComponent implements OnInit, AfterViewInit {
       const unorderedNotifications = await this.notificationService.getAllUserNotifications(userId);
       this.notificationsList = unorderedNotifications;
 
-      const userBills = await this.billsService.getAllUserBills(userId);
+      if (this.notificationsList.length > 0) {
+        const userBills = await this.billsService.getAllUserBills(userId);
 
-      this.notificationsWithBills = this.notificationsList.map(notif => {
-        const relatedBill = userBills.find(bill => bill.idConta === notif.idConta);
-        return relatedBill ? {...notif, relatedBill} : notif;
-      });
+        this.notificationsWithBills = this.notificationsList.map(notif => {
+          const relatedBill = userBills.find(bill => bill.idConta === notif.idConta);
+          return relatedBill ? {...notif, relatedBill} : notif;
+        });
+      } else {
+        this.notificationsWithBills = [];
+      }
       console.log('🚀 -> PopoverComponent -> refreshNotificationsList -> this.notificationsWithBills', this.notificationsWithBills);
     } catch (error) {
       console.error('ERROR on notificationsList', error);
