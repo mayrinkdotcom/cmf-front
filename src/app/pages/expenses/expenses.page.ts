@@ -12,6 +12,7 @@ import { Transaction, TransactionResponse } from 'src/app/types/Transaction';
 export class ExpensesPage implements OnInit, AfterViewInit {
 
   availableTransactions: TransactionResponse[] = [];
+  loading = false;
 
   constructor(
     private transactionService: TransactionService,
@@ -210,14 +211,28 @@ export class ExpensesPage implements OnInit, AfterViewInit {
         color: 'danger',
       });
       t.present();
-      console.log('🚀 -> TransactionsPage -> onDeleteTransaction -> error', error);
+      console.error('🚀 -> TransactionsPage -> onDeleteTransaction -> error', error);
       throw error;
     }
   }
 
   async refreshAvailableTransactions() {
-    const transactionsUnordered = await this.transactionService.getTransactionsToShow();
-    this.availableTransactions = transactionsUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
+    this.loading = true;
+    try {
+      const transactionsUnordered = await this.transactionService.getTransactionsByDate(new Date().toISOString().slice(0, 10));
+      this.availableTransactions = transactionsUnordered.sort((a, b) => a?.ordem.localeCompare(b?.ordem));
+      this.loading = false;
+    } catch (error) {
+      // l.dismiss();
+      const t = await this.toastController.create({
+        message: 'Falha ao carregar movimentações, por favor tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.error('🚀 -> ExpensesPage -> refreshAvailableTransactions -> error', error);
+      throw error;
+    }
   }
 
 
