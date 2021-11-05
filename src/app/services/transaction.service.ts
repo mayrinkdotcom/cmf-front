@@ -34,6 +34,19 @@ export class TransactionService {
     }
   }
 
+  async updateTransaction(editedTransaction: TransactionResponse) {
+    console.log('not implemented yet', editedTransaction);
+  }
+
+  async deleteTransaction(transactionId: number) {
+    console.log('not implemented yet', transactionId);
+  }
+
+  async getTransactionsToShow() {
+    console.log('not implemented yet');
+    return [];
+  }
+
   logError(error: Error) {
     console.error('ERROR on transaction-service:', error);
   }

@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
+import { ComponentsModule } from 'src/app/core/components/components.module';
 
 import { ExpensesPageRoutingModule } from './expenses-routing.module';
-
 import { ExpensesPage } from './expenses.page';
 
 @NgModule({
@@ -13,7 +12,8 @@ import { ExpensesPage } from './expenses.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ExpensesPageRoutingModule
+    ExpensesPageRoutingModule,
+    ComponentsModule,
   ],
   declarations: [ExpensesPage]
 })
