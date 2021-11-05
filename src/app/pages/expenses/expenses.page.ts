@@ -109,7 +109,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
           placeholder: 'Quant.',
           name: 'quantidade',
           type: 'number',
-          value: item.value,
+          value: item.valor,
         }
       ],
       buttons: [
@@ -121,12 +121,12 @@ export class ExpensesPage implements OnInit, AfterViewInit {
           text: 'Salvar',
           handler: async (inputs) => {
             const editedTransaction: TransactionResponse = {
-              userId: item.userId,
-              order: item.order,
+              idUsuario: item.idUsuario,
+              ordem: item.ordem,
               idMovimentacao: item.idMovimentacao,
               type: item.type,
-              value: item.value,
-              productId: item.productId,
+              valor: item.valor,
+              idProduto: item.idProduto,
               productQty: item.productQty,
             };
             this.editTransaction(editedTransaction);

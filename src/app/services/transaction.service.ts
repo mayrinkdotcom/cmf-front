@@ -16,11 +16,11 @@ export class TransactionService {
     console.log('🚀 -> TransactionService -> createTransaction -> params', transaction);
     const url = `${environment.BASE_URL}/movimentacao/cadastrar`;
     const body = {
-      idProduto: transaction.productId ? transaction.productId : 0,
-      idUsuario: transaction.userId,
-      ordem: transaction.order,
+      idProduto: transaction.idProduto ? transaction.idProduto : 0,
+      idUsuario: transaction.idUsuario,
+      ordem: transaction.ordem,
       tipoMovimentacao: transaction.type,
-      valor: transaction.value
+      valor: transaction.valor
     };
 
     try {
