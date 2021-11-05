@@ -1,11 +1,13 @@
 export interface Transaction {
-    order: 'ENTRADA' | 'SAIDA' | '';
-    userId: number;
-    type: 'PRODUTO' | 'IMPOSTO' | 'CONTAS' | '';
-    value: number;
+  idUsuario: number;
+  ordem: 'ENTRADA' | 'SAIDA' | '';
+  type: 'PRODUTO' | 'IMPOSTO' | 'CONTAS' | '';
+  valor: number;
 
-    productId?: number;
-    productQty?: number;
+  idCategoria?: number;
+
+  idProduto?: number;
+  productQty?: number;
 }
 
 export interface TransactionResponse extends Transaction {
@@ -13,8 +15,8 @@ export interface TransactionResponse extends Transaction {
 }
 
 export const DEFAULT_TRANSACTION: Transaction = {
-    order: '',
-    userId: 0,
-    type: '',
-    value: 0,
+  ordem: '',
+  idUsuario: 0,
+  type: '',
+  valor: 0,
 };
