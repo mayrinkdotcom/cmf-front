@@ -29,7 +29,7 @@
     <ion-row>
       <ion-col size="12">
         <ion-list>
-          <ion-spinner name="circular" *ngIf="!availableTransactions.length"></ion-spinner>
+          <ion-spinner name="circular" *ngIf="loading"></ion-spinner>
           <ion-item *ngFor="let transaction of availableTransactions">
               <ion-col size="6" sizeMd="8">
                 <ion-label>{{ transaction.idMovimentacao }}</ion-label>
@@ -45,6 +45,10 @@
                   <ion-icon name="trash"></ion-icon>
                 </ion-button>
               </ion-col>
+          </ion-item>
+
+          <ion-item *ngIf="!availableTransactions.length">
+            <ion-label>Sem movimentações para mostrar no momento.</ion-label>
           </ion-item>
         </ion-list>
       </ion-col>

@@ -13,14 +13,13 @@ export class TransactionService {
   ) { }
 
   async createTransaction(transaction: Transaction): Promise<TransactionResponse> {
-    console.log('🚀 -> TransactionService -> createTransaction -> params', transaction);
     const url = `${environment.BASE_URL}/movimentacao/cadastrar`;
     const body = {
-      idProduto: transaction.idProduto ? transaction.idProduto : 0,
       idUsuario: transaction.idUsuario,
       ordem: transaction.ordem,
       tipoMovimentacao: transaction.type,
-      valor: transaction.valor
+      valor: transaction.valor,
+      idProduto: transaction.idProduto,
     };
 
     try {
@@ -42,9 +41,22 @@ export class TransactionService {
     console.log('not implemented yet', transactionId);
   }
 
-  async getTransactionsToShow() {
-    console.log('not implemented yet');
-    return [];
+  async getTransactionsByDate(initDate: string, finalDate?: string) {
+    const url = `${environment.BASE_URL}/movimentacao/buscar-movimentacao-por-data/{dataInicial}/{dataFinal}`;
+
+    if (!finalDate) {
+      finalDate = new Date().toISOString().slice(0, 10);
+    }
+    try {
+      const response = await this.http
+      .get<TransactionResponse[]>(url, {params: { dataInicial: initDate, dataFinal: finalDate}})
+      .toPromise();
+
+      return response ? response : [];
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
   }
 
   logError(error: Error) {
