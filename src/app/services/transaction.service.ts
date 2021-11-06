@@ -17,7 +17,6 @@ export class TransactionService {
     const body = {
       idUsuario: transaction.idUsuario,
       ordem: transaction.ordem,
-      tipoMovimentacao: transaction.type,
       valor: transaction.valor,
       idProduto: transaction.idProduto,
     };
