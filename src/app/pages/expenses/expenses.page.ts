@@ -1,8 +1,10 @@
-import { TransactionService } from './../../services/transaction.service';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { LoadingController, ToastController, AlertController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { TopbarService } from 'src/app/services/topbar.service';
-import { Transaction, TransactionResponse } from 'src/app/types/Transaction';
+import { TransactionResponse } from 'src/app/types/Transaction';
+
+import { TransactionService } from './../../services/transaction.service';
+import { AddTransactionComponent } from './add-transaction/add-transaction.component';
 
 @Component({
   selector: 'app-expenses',
@@ -20,6 +22,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private alertController: AlertController,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -31,67 +34,12 @@ export class ExpensesPage implements OnInit, AfterViewInit {
   }
 
   async onClickAddTransaction() {
-    const alert = await this.alertController.create({
-      header: 'Adicionar produto',
-      inputs: [
-        {
-          label: 'Nome',
-          placeholder: 'Nome',
-          name: 'nome',
-          type: 'text',
-        },
-        {
-          label: 'Quant.',
-          placeholder: 'Quant.',
-          name: 'quantidade',
-          type: 'number',
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => alert.dismiss(),
-        },
-        {
-          text: 'Adicionar',
-          handler: (inputs) => this.saveTransaction(inputs),
-        },
-      ]
+    const modal = await this.modalController.create({
+      component: AddTransactionComponent,
+      backdropDismiss: false,
     });
 
-    alert.present();
-  }
-
-  async saveTransaction(newExpense: Transaction) {
-    const l = await this.loadingController.create({
-      message: 'Adicionando produto...',
-    });
-    l.present();
-
-    try {
-      const response = await this.transactionService.createTransaction(newExpense);
-      l.dismiss();
-
-      const t = await this.toastController.create({
-        message: 'Produto criado com sucesso!',
-        duration: 4000,
-        color: 'success',
-      });
-      t.present();
-
-      this.refreshAvailableTransactions();
-
-    } catch (error) {
-      l.dismiss();
-      const t = await this.toastController.create({
-        message: 'Falha na criação do produto, por favor verifique os dados e tente novamente.',
-        duration: 4000,
-        color: 'danger',
-      });
-      t.present();
-      console.log('🚀 -> TransactionsPage -> onAddTransaction -> error', error);
-      throw error;
-    }
+    modal.present();
   }
 
   async onEditTransaction(item: TransactionResponse) {
@@ -103,7 +51,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
           placeholder: 'Nome',
           name: 'nome',
           type: 'text',
-          value: item.type,
+          value: item.ordem,
         },
         {
           label: 'Quant.',
@@ -125,7 +73,6 @@ export class ExpensesPage implements OnInit, AfterViewInit {
               idUsuario: item.idUsuario,
               ordem: item.ordem,
               idMovimentacao: item.idMovimentacao,
-              type: item.type,
               valor: item.valor,
               idProduto: item.idProduto,
               productQty: item.productQty,

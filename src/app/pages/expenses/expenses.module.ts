@@ -1,6 +1,7 @@
+import { AddTransactionComponent } from './add-transaction/add-transaction.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ComponentsModule } from 'src/app/core/components/components.module';
 
@@ -14,7 +15,8 @@ import { ExpensesPage } from './expenses.page';
     IonicModule,
     ExpensesPageRoutingModule,
     ComponentsModule,
+    ReactiveFormsModule,
   ],
-  declarations: [ExpensesPage]
+  declarations: [ExpensesPage, AddTransactionComponent]
 })
 export class ExpensesPageModule {}
