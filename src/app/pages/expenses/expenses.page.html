@@ -47,7 +47,7 @@
               </ion-col>
           </ion-item>
 
-          <ion-item *ngIf="!availableTransactions.length">
+          <ion-item *ngIf="!loading && !availableTransactions.length">
             <ion-label>Sem movimentações para mostrar no momento.</ion-label>
           </ion-item>
         </ion-list>
