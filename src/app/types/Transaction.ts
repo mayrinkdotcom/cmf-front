@@ -3,7 +3,7 @@ export interface Transaction {
   ordem: 'ENTRADA' | 'SAIDA' | '';
   valor: number;
 
-  idCategoria?: number;
+  idCategoria: number;
 
   idProduto?: number;
   productQty?: number;
@@ -14,7 +14,8 @@ export interface TransactionResponse extends Transaction {
 }
 
 export const DEFAULT_TRANSACTION: Transaction = {
-  ordem: '',
   idUsuario: 0,
+  idCategoria: 0,
+  ordem: '',
   valor: 0,
 };

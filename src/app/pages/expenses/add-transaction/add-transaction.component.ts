@@ -16,21 +16,22 @@ import { ProductResponse } from './../../../types/Product';
 export class AddTransactionComponent implements OnInit, AfterViewInit {
 
   addTransactionForm: FormGroup = new FormGroup({
-    category: new FormControl(false, [
+    category: new FormControl(null, [
       Validators.required,
     ]),
-    order: new FormControl(false, [
+    order: new FormControl(null, [
       Validators.required,
     ]),
-    value: new FormControl(false, [
+    value: new FormControl(null, [
       Validators.required,
     ]),
-    hasLinkedProduct: new FormControl(false),
-    productId: new FormControl(false),
-    productQty: new FormControl(false),
+    hasLinkedProduct: new FormControl(null),
+    productId: new FormControl(null),
+    productQty: new FormControl(null),
   });
 
   availableProducts: ProductResponse[];
+  availableCategories: any[];
 
   constructor(
     private loadingController: LoadingController,
@@ -45,16 +46,18 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.refreshAvailableProducts();
+    this.refreshAvailableCategories();
   }
 
   onSaveTransaction() {
     const newExpense: Transaction = {
+      idCategoria: 1,
       ordem: this.addTransactionForm.get('order').value,
       idUsuario: this.userService.getLoggedUser().idUsuario,
       valor: this.addTransactionForm.get('value').value,
     };
 
-    if (this.addTransactionForm.get('hasLinkedProduct')) {
+    if (this.addTransactionForm.get('hasLinkedProduct').value) {
       newExpense.idProduto = this.addTransactionForm.get('productId').value;
       newExpense.productQty = this.addTransactionForm.get('productQty').value;
     }
@@ -101,4 +104,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
     this.availableProducts = await this.productService.getAvailableProducts();
   }
 
+  async refreshAvailableCategories() {
+    this.availableCategories = await this.productService.getAvailableProducts();
+  }
 }
