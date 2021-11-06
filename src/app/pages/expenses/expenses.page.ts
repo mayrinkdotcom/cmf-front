@@ -71,6 +71,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
           handler: async (inputs) => {
             const editedTransaction: TransactionResponse = {
               idUsuario: item.idUsuario,
+              idCategoria: 0,
               ordem: item.ordem,
               idMovimentacao: item.idMovimentacao,
               valor: item.valor,
