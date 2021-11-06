@@ -122,7 +122,6 @@ export class BillsPage implements OnInit {
         idUsuario: (await this.userService.getUserByEmail('johndoe@ceo.com')).idUsuario,
         ordem: this.addTransaction.get('transactionType').value,
         valor: this.addTransaction.get('transactionValue').value,
-        type: this.addTransaction.get('relatedProduct').value ? 'PRODUTO' : 'CONTAS',
         idProduto: this.addTransaction.get('relatedProduct').value ? this.addTransaction.get('productName').value : null,
         productQty: this.addTransaction.get('relatedProduct').value ? this.addTransaction.get('productQuantity').value : null,
       };
