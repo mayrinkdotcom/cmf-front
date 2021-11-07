@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
-import { Category } from 'src/app/types/Category';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { CategoryService } from 'src/app/services/category.service';
+import { Category, CategoryResponse } from 'src/app/types/Category';
 
 @Component({
   selector: 'app-create-category',
@@ -7,20 +10,31 @@ import { Category } from 'src/app/types/Category';
   styleUrls: ['./create-category.component.scss'],
 })
 export class CreateCategoryComponent implements OnInit {
-  loadingController: any;
-  categoryService: any;
-  toastController: any;
 
-  constructor() { }
+  categories: CategoryResponse[] = [];
+
+  constructor(
+    private loadingController: LoadingController,
+    private categoryService: CategoryService,
+    private toastController: ToastController,
+    private modalController: ModalController,
+  ) { }
 
   ngOnInit() {}
-  async saveCategory(newCategory: Category) {
+
+  nomeCategoria: string;
+  ordemCategoria: 'ENTRADA' | 'SAIDA';
+  async saveCategory() {
     const l = await this.loadingController.create({
       message: 'Adicionando categoria...',
     });
     l.present();
 
     try {
+      const newCategory: Category = {
+        nome: this.nomeCategoria,
+        ordem: this.ordemCategoria
+      };
       console.log(newCategory);
       const response = await this.categoryService.createCategory(newCategory);
       l.dismiss();
@@ -31,7 +45,7 @@ export class CreateCategoryComponent implements OnInit {
         color: 'success',
       });
       t.present();
-
+      this.closeModal();
       this.refreshAvailableCategories();
 
     } catch (error) {
@@ -46,7 +60,17 @@ export class CreateCategoryComponent implements OnInit {
       throw error;
     }
   }
-  refreshAvailableCategories() {
-    throw new Error('Method not implemented.');
+  async refreshAvailableCategories() {
+    const categoriesUnordered = await this.categoryService.getAvailableCategories();
+    this.categories = categoriesUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
+  }
+
+  setOrderValue($event){
+    this.ordemCategoria = $event.target.value;
+    console.log(this.ordemCategoria);
+  }
+
+  closeModal(){
+    this.modalController.dismiss();
   }
 }
