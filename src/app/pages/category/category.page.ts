@@ -65,7 +65,6 @@ export class CategoryPage implements OnInit, AfterViewInit {
         }
       ]
     });
-    console.log(item.idCategoria);
     alert.present();
   }
 
