@@ -76,6 +76,10 @@ export class CategoryService {
     }
   }
 
+  onEditCategory(category: Category){
+    console.log('Not implemented yet');
+  }
+
   logError(error: Error) {
     console.error('ERROR on category-service:', error);
   }

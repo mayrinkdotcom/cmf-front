@@ -50,6 +50,54 @@ export class CategoryPage implements OnInit, AfterViewInit {
       m.present();
   }
 
+   async onDeleteCategory(item: CategoryResponse) {
+    const alert = await this.toastController.create({
+      header: 'Atenção!',
+      message: 'Deseja realmente excluir ' + item.nome + '? Essa ação não pode ser desfeita!',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => alert.dismiss(),
+        },
+        {
+          text: 'Confirmar',
+          handler: () => this.deleteCategory(item.idCategoria),
+        }
+      ]
+    });
+    console.log(item.idCategoria);
+    alert.present();
+  }
+
+  async deleteCategory(categoryId: number) {
+    const l = await this.loadingController.create({
+      message: 'Excluindo categoria...',
+    });
+
+    l.present();
+    try {
+      const res = await this.categoryService.deleteCategory(categoryId);
+      l.dismiss();
+      this.refreshAvailableCategories();
+      const t = await this.toastController.create({
+        message: 'Categoria excluída com sucesso!',
+        duration: 4000,
+        color: 'success',
+      });
+      t.present();
+    } catch (error) {
+      l.dismiss();
+      const t = await this.toastController.create({
+        message: 'Falha na edição do Categoria, por favor verifique os dados e tente novamente.',
+        duration: 4000,
+        color: 'danger',
+      });
+      t.present();
+      console.log('🚀 -> CategoryPage -> onDeleteCategory -> error', error);
+      throw error;
+    }
+  }
+
   async refreshAvailableCategories() {
     const categoriesUnordered = await this.categoryService.getAvailableCategories();
     this.categories = categoriesUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
