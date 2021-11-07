@@ -8,6 +8,7 @@ import { CategoryPageRoutingModule } from './category-routing.module';
 
 import { CategoryPage } from './category.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     CategoryPageRoutingModule,
     ComponentsModule
   ],
-  declarations: [CategoryPage]
+  declarations: [CategoryPage, CreateCategoryComponent]
 })
 export class CategoryPageModule {}

@@ -1,9 +1,10 @@
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { CategoryService } from 'src/app/services/category.service';
 import { TopbarService } from 'src/app/services/topbar.service';
 import { CategoryResponse, Category } from 'src/app/types/Category';
+import { CreateCategoryComponent } from './create-category/create-category.component';
 
 @Component({
   selector: 'app-category',
@@ -19,7 +20,7 @@ export class CategoryPage implements OnInit, AfterViewInit {
     private topbarService: TopbarService,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private alertController: AlertController,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -32,80 +33,21 @@ export class CategoryPage implements OnInit, AfterViewInit {
 
   async onClickAddCategory() {
 
-    const alert = await this.alertController.create({
-      header: 'Adicionar categoria',
-      inputs: [
-         {
-           label: 'Nome',
-           placeholder: 'Nome',
-           name: 'nome',
-           type: 'text',
-         },
-         {
-          name: 'Ordem',
-          type: 'radio',
-          label: 'ENTRADA',
-          value: 'ENTRADA',
-          checked: false
-        },
-        {
-          name: 'Ordem',
-          type: 'radio',
-          label: 'SAIDA',
-          value: 'SAIDA',
-          checked: false
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => alert.dismiss(),
-        },
-        {
-          text: 'Adicionar',
-          handler: (inputs) => this.saveCategory(inputs),
-        },
-      ]
+    const m = await this.modalController.create({
+      component: CreateCategoryComponent,
+      backdropDismiss: true,
     });
 
-    alert.present();
+    m.present();
   }
 
-  async saveCategory(newCategory: Category) {
-    const l = await this.loadingController.create({
-      message: 'Adicionando categoria...',
-    });
-    l.present();
-
-    try {
-      console.log(newCategory);
-      const response = await this.categoryService.createCategory(newCategory);
-      l.dismiss();
-
-      const t = await this.toastController.create({
-        message: 'Categoria criada com sucesso!',
-        duration: 4000,
-        color: 'success',
+  async editCategories() {
+      const m = await this.modalController.create({
+        component: CreateCategoryComponent,
+        componentProps: {},
+        backdropDismiss: true,
       });
-      t.present();
-
-      this.refreshAvailableCategories();
-
-    } catch (error) {
-      l.dismiss();
-      const t = await this.toastController.create({
-        message: 'Falha na criação da categoria, por favor verifique os dados e tente novamente.',
-        duration: 4000,
-        color: 'danger',
-      });
-      t.present();
-      console.log('🚀 -> CategoryPage -> onAddCategory -> error', error);
-      throw error;
-    }
-  }
-
-  editCategories() {
-    console.log('Not implemented yet');
+      m.present();
   }
 
   async refreshAvailableCategories() {
