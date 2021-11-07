@@ -1,3 +1,4 @@
+import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { CategoryService } from 'src/app/services/category.service';
@@ -33,21 +34,21 @@ export class CategoryPage implements OnInit, AfterViewInit {
 
     const alert = await this.alertController.create({
       header: 'Adicionar categoria',
-      backdropDismiss: true,
       inputs: [
-        {
-          label: 'Nome',
-          placeholder: 'Nome',
-          name: 'nome',
-          type: 'text',
-        },
+         {
+           label: 'Nome',
+           placeholder: 'Nome',
+           name: 'nome',
+           type: 'text',
+         },
          {
           name: 'Ordem',
           type: 'radio',
           label: 'ENTRADA',
           value: 'ENTRADA',
           checked: false
-        }, {
+        },
+        {
           name: 'Ordem',
           type: 'radio',
           label: 'SAIDA',
