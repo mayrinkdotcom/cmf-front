@@ -46,12 +46,12 @@ export class BillsService {
   logError(error: Error) {
     console.error('ERROR on bills-service:', error);
   }
-  async getAvailableBills(idUsuario: number): Promise<Bill[]> {
+  async getAvailableBills(usuarioId: number): Promise<BillResponse[]> {
     const url = `${environment.BASE_URL}/conta/buscar-por-usuario/{usuarioId}`;
 
     try {
       const response = await this.httpClient
-      .get<Bill[]>(url, {params: {idUsuario}})
+      .get<BillResponse[]>(url, {params: {usuarioId}})
       .toPromise();
 
       return response;
@@ -61,6 +61,6 @@ export class BillsService {
     }
   }
   logError(error: any) {
-    throw new Error('Method not implemented.');
+    console.error('Method not implemented.');
   }
 }
