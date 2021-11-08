@@ -46,5 +46,21 @@ export class BillsService {
   logError(error: Error) {
     console.error('ERROR on bills-service:', error);
   }
+  async getAvailableBills(): Promise<BillResponse[]> {
+    const url = `${environment.BASE_URL}/usuario/buscar-todos`;
 
+    try {
+      const response = await this.httpClient
+      .get<BillResponse[]>(url)
+      .toPromise();
+
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+  logError(error: any) {
+    throw new Error('Method not implemented.');
+  }
 }
