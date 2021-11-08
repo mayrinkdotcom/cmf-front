@@ -2,6 +2,7 @@ export interface Transaction {
   idUsuario: number;
   ordem: 'ENTRADA' | 'SAIDA' | '';
   valor: number;
+  tipoMovimentacao: string;
 
   idCategoria: number;
 
@@ -18,4 +19,5 @@ export const DEFAULT_TRANSACTION: Transaction = {
   idCategoria: 0,
   ordem: '',
   valor: 0,
+  tipoMovimentacao: '',
 };

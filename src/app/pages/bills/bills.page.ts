@@ -121,6 +121,7 @@ export class BillsPage implements OnInit {
       this.newTransaction = {
         idUsuario: (await this.userService.getUserByEmail('johndoe@ceo.com')).idUsuario,
         idCategoria: 0,
+        tipoMovimentacao: '',
         ordem: this.addTransaction.get('transactionType').value,
         valor: this.addTransaction.get('transactionValue').value,
         idProduto: this.addTransaction.get('relatedProduct').value ? this.addTransaction.get('productName').value : null,

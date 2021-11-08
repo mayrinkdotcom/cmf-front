@@ -75,6 +75,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
               ordem: item.ordem,
               idMovimentacao: item.idMovimentacao,
               valor: item.valor,
+              tipoMovimentacao: item.tipoMovimentacao,
               idProduto: item.idProduto,
               productQty: item.productQty,
             };

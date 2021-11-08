@@ -14,11 +14,14 @@ export class TransactionService {
 
   async createTransaction(transaction: Transaction): Promise<TransactionResponse> {
     const url = `${environment.BASE_URL}/movimentacao/cadastrar`;
-    const body = {
+    const body: Transaction = {
       idUsuario: transaction.idUsuario,
+      idCategoria: transaction.idCategoria,
+      tipoMovimentacao: transaction.tipoMovimentacao,
       ordem: transaction.ordem,
       valor: transaction.valor,
       idProduto: transaction.idProduto,
+      productQty: transaction.productQty,
     };
 
     try {

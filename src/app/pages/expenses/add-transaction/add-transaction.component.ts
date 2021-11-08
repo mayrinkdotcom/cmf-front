@@ -1,3 +1,5 @@
+import { CategoryService } from 'src/app/services/category.service';
+import { CategoryResponse, DEFAULT_CATEGORY } from 'src/app/types/Category';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
@@ -19,7 +21,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
     category: new FormControl(null, [
       Validators.required,
     ]),
-    order: new FormControl(null, [
+    description: new FormControl(null, [
       Validators.required,
     ]),
     value: new FormControl(null, [
@@ -31,7 +33,9 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
   });
 
   availableProducts: ProductResponse[];
-  availableCategories: any[];
+  availableCategories: CategoryResponse[];
+
+  selectedCategory: CategoryResponse = DEFAULT_CATEGORY;
 
   constructor(
     private loadingController: LoadingController,
@@ -40,6 +44,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private transactionService: TransactionService,
     private productService: ProductService,
+    private categoryService: CategoryService,
   ) { }
 
   ngOnInit() {}
@@ -51,8 +56,9 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
 
   onSaveTransaction() {
     const newExpense: Transaction = {
-      idCategoria: 1,
-      ordem: this.addTransactionForm.get('order').value,
+      idCategoria: this.selectedCategory.idCategoria,
+      ordem: this.selectedCategory.ordem,
+      tipoMovimentacao: this.addTransactionForm.get('description').value,
       idUsuario: this.userService.getLoggedUser().idUsuario,
       valor: this.addTransactionForm.get('value').value,
     };
@@ -62,6 +68,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
       newExpense.productQty = this.addTransactionForm.get('productQty').value;
     }
     console.log('🚀 -> AddTransactionComponent -> onSaveTransaction -> newExpense', newExpense);
+    this.saveTransaction(newExpense);
   }
 
   async saveTransaction(newExpense: Transaction) {
@@ -105,6 +112,13 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
   }
 
   async refreshAvailableCategories() {
-    this.availableCategories = await this.productService.getAvailableProducts();
+    this.availableCategories = await this.categoryService.getAvailableCategories();
+  }
+
+  async onChangeCategory() {
+    this.selectedCategory = this.availableCategories
+      .find(category => category.idCategoria === this.addTransactionForm.get('category').value);
+
+    this.addTransactionForm.get('category').setValue(this.selectedCategory.idCategoria);
   }
 }
