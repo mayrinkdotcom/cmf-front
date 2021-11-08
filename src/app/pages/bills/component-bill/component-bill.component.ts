@@ -31,4 +31,8 @@ export class ComponentBillComponent implements OnInit {
     this.bills = categoriesUnordered.sort((a, b) => a.tipoConta.localeCompare(b.tipoConta));
   }
 
+  closeModal(){
+    this.modalController.dismiss();
+  }
+
 }
