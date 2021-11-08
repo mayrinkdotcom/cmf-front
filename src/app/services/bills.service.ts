@@ -46,12 +46,12 @@ export class BillsService {
   logError(error: Error) {
     console.error('ERROR on bills-service:', error);
   }
-  async getAvailableBills(): Promise<BillResponse[]> {
-    const url = `${environment.BASE_URL}/usuario/buscar-todos`;
+  async getAvailableBills(): Promise<Bill[]> {
+    const url = `${environment.BASE_URL}/conta/buscar-por-usuario/{usuarioId}?usuarioId=52`;
 
     try {
       const response = await this.httpClient
-      .get<BillResponse[]>(url)
+      .get<Bill[]>(url)
       .toPromise();
 
       return response;

@@ -1,7 +1,8 @@
+/* eslint-disable @angular-eslint/use-lifecycle-interface */
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
-import { BillResponse } from 'src/app/types/Bill';
+import { Bill, BillResponse } from 'src/app/types/Bill';
 
 @Component({
   selector: 'app-component-bill',
@@ -10,15 +11,20 @@ import { BillResponse } from 'src/app/types/Bill';
 })
 export class ComponentBillComponent implements OnInit {
 
-  bills: BillResponse[] = [];
+  bills: Bill[] = [];
+  topbarService: any;
   constructor(
     private billService: BillsService,
     private loadingController: LoadingController,
-    private toastController: ToastController,
     private modalController: ModalController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.refreshAvailableCBills();
+  }
 
   async refreshAvailableCBills() {
     const categoriesUnordered = await this.billService.getAvailableBills();

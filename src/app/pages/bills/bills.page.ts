@@ -9,6 +9,7 @@ import { TopbarService } from 'src/app/services/topbar.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
 import { Notification } from 'src/app/types/Notification';
+import { BillResponse } from 'src/app/types/Bill';
 import { ProductResponse } from 'src/app/types/Product';
 import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
 import { UserResponse } from 'src/app/types/User';
@@ -36,6 +37,7 @@ export class BillsPage implements OnInit {
     },
   );
 
+  bill: BillResponse;
   modalToToggle: HTMLElement;
   newTransaction: Transaction = DEFAULT_TRANSACTION;
 
@@ -77,10 +79,10 @@ export class BillsPage implements OnInit {
     this.topbarService.configBackButton(true, '/home');
   }
 
-  async onClickViewBill(){
+  async onClickViewBill(bill: BillResponse){
     const modalBill = await this.modalController.create({
       component: ComponentBillComponent,
-      componentProps: {},
+      componentProps: {bill},
       backdropDismiss: true,
     });
 
