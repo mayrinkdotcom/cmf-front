@@ -5,6 +5,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { TopbarService } from 'src/app/services/topbar.service';
 import { CategoryResponse, Category } from 'src/app/types/Category';
 import { CreateCategoryComponent } from './create-category/create-category.component';
+import { EditCategoryComponent } from './edit-category/edit-category.component';
 
 @Component({
   selector: 'app-category',
@@ -25,6 +26,7 @@ export class CategoryPage implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.topbarService.configBackButton(true, '/home');
+    console.log(this.categories);
   }
 
   ngAfterViewInit() {
@@ -32,22 +34,22 @@ export class CategoryPage implements OnInit, AfterViewInit {
   }
 
   async onClickAddCategory() {
-
     const m = await this.modalController.create({
       component: CreateCategoryComponent,
       backdropDismiss: true,
     });
-
     m.present();
+    this.refreshAvailableCategories();
   }
 
-  async editCategories() {
+  async onEditCategory(category: CategoryResponse) {
       const m = await this.modalController.create({
-        component: CreateCategoryComponent,
-        componentProps: {},
+        component: EditCategoryComponent,
+        componentProps: {idCategoria: category.idCategoria},
         backdropDismiss: true,
       });
       m.present();
+      this.refreshAvailableCategories();
   }
 
    async onDeleteCategory(item: CategoryResponse) {
@@ -87,7 +89,7 @@ export class CategoryPage implements OnInit, AfterViewInit {
     } catch (error) {
       l.dismiss();
       const t = await this.toastController.create({
-        message: 'Falha na edição do Categoria, por favor verifique os dados e tente novamente.',
+        message: 'Falha ao deletar a Categoria, por favor verifique os dados e tente novamente.',
         duration: 4000,
         color: 'danger',
       });

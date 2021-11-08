@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category, CategoryResponse } from 'src/app/types/Category';
 
 @Component({
-  selector: 'app-create-category',
-  templateUrl: './create-category.component.html',
-  styleUrls: ['./create-category.component.scss'],
+  selector: 'app-edit-category',
+  templateUrl: './edit-category.component.html',
+  styleUrls: ['./edit-category.component.scss'],
 })
-export class CreateCategoryComponent implements OnInit {
+export class EditCategoryComponent implements OnInit {
 
+  @Input() idCategoria;
   categories: CategoryResponse[] = [];
 
   constructor(
@@ -20,25 +21,26 @@ export class CreateCategoryComponent implements OnInit {
     private modalController: ModalController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   nomeCategoria: string;
   ordemCategoria: 'ENTRADA' | 'SAIDA';
-  async saveCategory() {
+
+  async editCategory() {
     const l = await this.loadingController.create({
-      message: 'Adicionando categoria...',
+      message: 'Atualizando categoria...',
     });
     l.present();
 
     try {
-      const newCategory: Category = {
+      const newCategory: CategoryResponse = {
+        idCategoria: this.idCategoria,
         nome: this.nomeCategoria,
         ordem: this.ordemCategoria
       };
-      console.log(newCategory);
-      const response = await this.categoryService.createCategory(newCategory);
+      const response = await this.categoryService.updateCategory(newCategory);
       l.dismiss();
-
+      this.refreshAvailableCategories();
       const t = await this.toastController.create({
         message: 'Categoria criada com sucesso!',
         duration: 4000,
@@ -46,7 +48,6 @@ export class CreateCategoryComponent implements OnInit {
       });
       t.present();
       this.closeModal();
-      this.refreshAvailableCategories();
 
     } catch (error) {
       l.dismiss();
@@ -66,12 +67,13 @@ export class CreateCategoryComponent implements OnInit {
     this.categories = categoriesUnordered.sort((a, b) => a.nome.localeCompare(b.nome));
   }
 
-  setOrderValue($event){
+  setOrderValue($event) {
     this.ordemCategoria = $event.target.value;
     console.log(this.ordemCategoria);
   }
 
-  closeModal(){
+  closeModal() {
     this.modalController.dismiss();
   }
 }
+

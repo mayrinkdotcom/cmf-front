@@ -48,6 +48,7 @@ export class CategoryService {
     const url = `${environment.BASE_URL}/categoria/atualizar`;
 
     const body: Category = editedCategory;
+    console.log(body);
 
     try {
       const response = await this.http
@@ -74,10 +75,6 @@ export class CategoryService {
       this.logError(error);
       throw error;
     }
-  }
-
-  onEditCategory(category: Category){
-    console.log('Not implemented yet');
   }
 
   logError(error: Error) {
