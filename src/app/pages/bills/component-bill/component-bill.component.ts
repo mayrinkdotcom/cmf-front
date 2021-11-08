@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
+import { UserService } from 'src/app/services/user.service';
 import { Bill, BillResponse } from 'src/app/types/Bill';
 
 @Component({
@@ -12,11 +13,11 @@ import { Bill, BillResponse } from 'src/app/types/Bill';
 export class ComponentBillComponent implements OnInit {
 
   bills: Bill[] = [];
-  topbarService: any;
   constructor(
     private billService: BillsService,
     private loadingController: LoadingController,
     private modalController: ModalController,
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
@@ -27,8 +28,9 @@ export class ComponentBillComponent implements OnInit {
   }
 
   async refreshAvailableCBills() {
-    const categoriesUnordered = await this.billService.getAvailableBills();
-    this.bills = categoriesUnordered.sort((a, b) => a.tipoConta.localeCompare(b.tipoConta));
+    const loggedUser = await this.userService.getLoggedUser();
+    const billsUnordered = await this.billService.getAvailableBills(loggedUser.idUsuario);
+    this.bills = billsUnordered.sort((a, b) => a.tipoConta.localeCompare(b.tipoConta));
   }
 
   closeModal(){
