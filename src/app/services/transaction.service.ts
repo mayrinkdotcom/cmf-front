@@ -40,7 +40,18 @@ export class TransactionService {
   }
 
   async deleteTransaction(transactionId: number) {
-    console.log('not implemented yet', transactionId);
+    const url = `${environment.BASE_URL}/movimentacao/deletar/{id}`;
+
+    try {
+      const response = await this.http
+      .delete<null>(url, {params: {id: transactionId}})
+      .toPromise();
+
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
   }
 
   async getTransactionsByDate(initDate: string, finalDate?: string) {
