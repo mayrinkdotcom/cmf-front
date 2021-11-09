@@ -43,9 +43,6 @@ export class BillsService {
     }
   }
 
-  logError(error: Error) {
-    console.error('ERROR on bills-service:', error);
-  }
   async getAvailableBills(usuarioId: number): Promise<BillResponse[]> {
     const url = `${environment.BASE_URL}/conta/buscar-por-usuario/{usuarioId}`;
 
@@ -60,7 +57,8 @@ export class BillsService {
       throw error;
     }
   }
-  logError(error: any) {
-    console.error('Method not implemented.');
+
+  logError(error: Error) {
+    console.error('ERROR on bills-service:', error);
   }
 }
