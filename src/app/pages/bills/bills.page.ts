@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -9,9 +9,11 @@ import { TopbarService } from 'src/app/services/topbar.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
 import { Notification } from 'src/app/types/Notification';
+import { BillResponse } from 'src/app/types/Bill';
 import { ProductResponse } from 'src/app/types/Product';
 import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
 import { UserResponse } from 'src/app/types/User';
+import { ComponentBillComponent } from './component-bill/component-bill.component';
 
 @Component({
   selector: 'app-bills',
@@ -35,6 +37,7 @@ export class BillsPage implements OnInit {
     },
   );
 
+  bill: BillResponse;
   modalToToggle: HTMLElement;
   newTransaction: Transaction = DEFAULT_TRANSACTION;
 
@@ -64,6 +67,7 @@ export class BillsPage implements OnInit {
     private billsService: BillsService,
     private notificationService: NotificationService,
     private topbarService: TopbarService,
+    private modalController: ModalController,
   ) { }
 
   async ngOnInit() {
@@ -73,6 +77,17 @@ export class BillsPage implements OnInit {
     this.refreshAvailableProducts();
     this.userLogged = this.userService.getLoggedUser();
     this.topbarService.configBackButton(true, '/home');
+  }
+
+  async onClickViewBill(bill: BillResponse){
+    const modalBill = await this.modalController.create({
+      component: ComponentBillComponent,
+      componentProps: {bill},
+      backdropDismiss: true,
+    });
+
+    modalBill.present();
+    this.refreshAvailableProducts();
   }
 
   checkUserLogged() {

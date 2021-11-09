@@ -8,6 +8,7 @@ import { BillsPageRoutingModule } from './bills-routing.module';
 
 import { BillsPage } from './bills.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
+import { ComponentBillComponent } from './component-bill/component-bill.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { ComponentsModule } from 'src/app/core/components/components.module';
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [BillsPage]
+  declarations: [BillsPage, ComponentBillComponent]
 })
 export class BillsPageModule {}

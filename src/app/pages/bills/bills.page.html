@@ -19,6 +19,7 @@
         <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
         <ion-label>Ver meus gastos</ion-label>
       </ion-item>
+
       <ion-item>
         <div id="fees-content" class="hidden">
           <div class="fees-item">
@@ -170,3 +171,8 @@
     </ion-card-content>
   </ion-card>
 </div>
+
+<ion-button id="modalBill" (click)="onClickViewBill(bill)" class="toggleAccordion">
+  <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+  <ion-label>Ver minhas contas</ion-label>
+</ion-button>
