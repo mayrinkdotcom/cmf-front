@@ -40,52 +40,31 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     });
 
     modal.present();
+
+    const { data } = await modal.onWillDismiss();
+
+    if (!!data) {
+      console.log('🚀 -> ExpensesPage -> onClickAddTransaction -> data', data);
+      this.refreshAvailableTransactions();
+    }
   }
 
   async onEditTransaction(item: TransactionResponse) {
-    const alert = await this.alertController.create({
-      header: 'Editar movimentação',
-      inputs: [
-        {
-          label: 'Nome',
-          placeholder: 'Nome',
-          name: 'nome',
-          type: 'text',
-          value: item.ordem,
-        },
-        {
-          label: 'Quant.',
-          placeholder: 'Quant.',
-          name: 'quantidade',
-          type: 'number',
-          value: item.valor,
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancelar',
-          handler: () => alert.dismiss(),
-        },
-        {
-          text: 'Salvar',
-          handler: async (inputs) => {
-            const editedTransaction: TransactionResponse = {
-              idUsuario: item.idUsuario,
-              idCategoria: 0,
-              ordem: item.ordem,
-              idMovimentacao: item.idMovimentacao,
-              valor: item.valor,
-              tipoMovimentacao: item.tipoMovimentacao,
-              idProduto: item.idProduto,
-              productQty: item.productQty,
-            };
-            this.editTransaction(editedTransaction);
-          },
-        },
-      ]
+    console.log('🚀 -> ExpensesPage -> onEditTransaction -> item', item);
+    const modal = await this.modalController.create({
+      component: AddTransactionComponent,
+      componentProps: { transactionToEdit: item },
+      backdropDismiss: false,
     });
 
-    alert.present();
+    modal.present();
+
+    const { data } = await modal.onWillDismiss();
+
+    if (!!data) {
+      console.log('🚀 -> ExpensesPage -> onClickAddTransaction -> data', data);
+      this.refreshAvailableTransactions();
+    }
   }
 
   async editTransaction(editedTransaction: TransactionResponse) {
@@ -121,7 +100,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
   async onDeleteTransaction(item: TransactionResponse) {
     const alert = await this.alertController.create({
       header: 'Atenção!',
-      message: 'Deseja realmente excluir ' + item.idMovimentacao + '? Essa ação não pode ser desfeita!',
+      message: 'Deseja realmente excluir ' + item.tipoMovimentacao + '? Essa ação não pode ser desfeita!',
       buttons: [
         {
           text: 'Cancelar',
@@ -170,9 +149,9 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     try {
       const transactionsUnordered = await this.transactionService.getTransactionsByDate(new Date().toISOString().slice(0, 10));
       this.availableTransactions = transactionsUnordered.sort((a, b) => a?.ordem.localeCompare(b?.ordem));
+      console.log('🚀 -> ExpensesPage -> refreshAvailableTransactions -> this.availableTransactions', this.availableTransactions);
       this.loading = false;
     } catch (error) {
-      // l.dismiss();
       const t = await this.toastController.create({
         message: 'Falha ao carregar movimentações, por favor tente novamente.',
         duration: 4000,
