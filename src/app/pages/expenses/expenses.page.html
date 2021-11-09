@@ -1,12 +1,12 @@
 <ion-header>
-  <app-topbar topbarTitle="Gastos"></app-topbar>
+  <app-topbar topbarTitle="Movimentações"></app-topbar>
 </ion-header>
 
 <ion-content>
   <ion-grid fixed>
     <ion-row class="ion-justify-content-between">
       <ion-col size="10" sizeMd="11">
-        <h4>Gestão de gastos</h4>
+        <h4>Gestão de movimentações</h4>
       </ion-col>
       <ion-col size="2" sizeMd="1">
         <ion-button (click)="onClickAddTransaction()">
@@ -16,11 +16,14 @@
     </ion-row>
 
     <ion-row>
-      <ion-col size="6" sizeMd="8">
+      <ion-col size="5">
         <ion-label>Nome</ion-label>
       </ion-col>
-      <ion-col size="4" sizeMd="2">
-        <ion-label>Quantidade</ion-label>
+      <ion-col size="3">
+        <ion-label>Valor</ion-label>
+      </ion-col>
+      <ion-col size="2">
+        <ion-label>Ordem</ion-label>
       </ion-col>
       <ion-col size="2">
         <ion-label>Ações</ion-label>
@@ -31,11 +34,25 @@
         <ion-list>
           <ion-spinner name="circular" *ngIf="loading"></ion-spinner>
           <ion-item *ngFor="let transaction of availableTransactions">
-              <ion-col size="6" sizeMd="8">
-                <ion-label>{{ transaction.idMovimentacao }}</ion-label>
+              <ion-col size="5">
+                <ion-label>{{ transaction.tipoMovimentacao }}</ion-label>
               </ion-col>
-              <ion-col size="4" sizeMd="2">
-                <ion-label>{{ transaction.productQty }}</ion-label>
+              <ion-col size="3">
+                <ion-label>{{ transaction.valor }}</ion-label>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon
+                  name="arrow-up"
+                  *ngIf="transaction.ordem === 'ENTRADA'"
+                  title="Entrada"
+                  color="success"
+                ></ion-icon>
+                <ion-icon
+                  name="arrow-down"
+                  *ngIf="transaction.ordem === 'SAIDA'"
+                  title="Saída"
+                  color="danger"
+                ></ion-icon>
               </ion-col>
               <ion-col size="2">
                 <ion-button (click)="onEditTransaction(transaction)" color="warning">
