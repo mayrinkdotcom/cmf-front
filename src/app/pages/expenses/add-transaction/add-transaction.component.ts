@@ -1,11 +1,11 @@
-import { CategoryService } from 'src/app/services/category.service';
-import { CategoryResponse, DEFAULT_CATEGORY } from 'src/app/types/Category';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { CategoryService } from 'src/app/services/category.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
-import { Transaction } from 'src/app/types/Transaction';
+import { CategoryResponse, DEFAULT_CATEGORY } from 'src/app/types/Category';
+import { Transaction, TransactionResponse } from 'src/app/types/Transaction';
 
 import { ProductService } from './../../../services/product.service';
 import { ProductResponse } from './../../../types/Product';
@@ -16,6 +16,8 @@ import { ProductResponse } from './../../../types/Product';
   styleUrls: ['./add-transaction.component.scss'],
 })
 export class AddTransactionComponent implements OnInit, AfterViewInit {
+
+  @Input() transactionToEdit: TransactionResponse;
 
   addTransactionForm: FormGroup = new FormGroup({
     category: new FormControl(null, [
@@ -52,6 +54,11 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.refreshAvailableProducts();
     this.refreshAvailableCategories();
+
+    if (!!this.transactionToEdit) {
+      console.log(this.transactionToEdit);
+      this.populateAddTransactionForm();
+    }
   }
 
   onSaveTransaction() {
@@ -67,7 +74,6 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
       newExpense.idProduto = this.addTransactionForm.get('productId').value;
       newExpense.productQty = this.addTransactionForm.get('productQty').value;
     }
-    console.log('🚀 -> AddTransactionComponent -> onSaveTransaction -> newExpense', newExpense);
     this.saveTransaction(newExpense);
   }
 
@@ -88,7 +94,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
       });
       t.present();
 
-      this.closeModal();
+      this.closeModal(true);
 
     } catch (error) {
       l.dismiss();
@@ -103,8 +109,12 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
     }
   }
 
-  closeModal() {
-    this.modalController.dismiss();
+  closeModal(emitRefresh?: boolean) {
+    if (emitRefresh) {
+      this.modalController.dismiss(this.addTransactionForm.value);
+    } else {
+      this.modalController.dismiss();
+    }
   }
 
   async refreshAvailableProducts() {
@@ -120,5 +130,16 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
       .find(category => category.idCategoria === this.addTransactionForm.get('category').value);
 
     this.addTransactionForm.get('category').setValue(this.selectedCategory.idCategoria);
+  }
+
+  populateAddTransactionForm() {
+    this.addTransactionForm.get('category').setValue(this.transactionToEdit.idCategoria);
+    this.addTransactionForm.get('description').setValue(this.transactionToEdit.tipoMovimentacao);
+    this.addTransactionForm.get('value').setValue(this.transactionToEdit.valor);
+    if (this.transactionToEdit.idProduto) {
+      this.addTransactionForm.get('hasLinkedProduct').setValue(true);
+      this.addTransactionForm.get('productId').setValue(this.transactionToEdit.idProduto);
+      this.addTransactionForm.get('productQty').setValue(this.transactionToEdit.productQty);
+    }
   }
 }
