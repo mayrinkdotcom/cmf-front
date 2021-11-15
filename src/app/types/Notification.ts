@@ -1,5 +1,5 @@
 export interface Notification {
-    dataLembrete: Date;
+    dataLembrete: string;
     idConta: number;
     idUsuario: number;
 }

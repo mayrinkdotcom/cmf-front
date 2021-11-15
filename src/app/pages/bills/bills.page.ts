@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -14,6 +14,7 @@ import { ProductResponse } from 'src/app/types/Product';
 import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
 import { UserResponse } from 'src/app/types/User';
 import { ComponentBillComponent } from './component-bill/component-bill.component';
+import { alertController } from '@ionic/core';
 
 @Component({
   selector: 'app-bills',
@@ -54,6 +55,7 @@ export class BillsPage implements OnInit {
   vencimento: Date;
   valor: number;
   checkbox: boolean;
+  dataNotificacao: Date;
 
   userLogged: UserResponse;
 
@@ -68,6 +70,7 @@ export class BillsPage implements OnInit {
     private notificationService: NotificationService,
     private topbarService: TopbarService,
     private modalController: ModalController,
+    private allertController: AlertController
   ) { }
 
   async ngOnInit() {
@@ -222,12 +225,43 @@ export class BillsPage implements OnInit {
     }
   }
 
+  async salvarDataDeNotificacao(){
+    if(!this.checkbox){
+      const alert = await this.allertController.create({
+        message: 'Digite a data para receber a notificação',
+        backdropDismiss: false,
+        inputs: [
+          {
+            name: 'notificacao',
+            type: 'date'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancelar',
+            handler: () => {alertController.dismiss();
+              this.checkbox = false;
+            },
+          },
+          {
+            text: 'Confirmar',
+             handler: (data: Date) => this.dataNotificacao = data
+          }
+        ]
+      });
+
+      alert.present();
+    }
+  }
+
+
   async addNotification(idConta: number) {
     try {
+      const lembrete = this.vencimento.toString();
       const newNotification: Notification = {
         idConta,
         idUsuario: this.userLogged.idUsuario,
-        dataLembrete: this.vencimento
+        dataLembrete: lembrete
       };
       const resNotificationCreated = await this.notificationService.createNotification(newNotification);
       console.log('🚀 -> BillsPage -> addNotification -> resNotificationCreated', resNotificationCreated);
