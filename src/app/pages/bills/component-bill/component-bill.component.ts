@@ -14,13 +14,13 @@ import { EditBillComponent } from '../edit-bill/edit-bill.component';
 export class ComponentBillComponent implements OnInit {
 
   bills: BillResponse[] = [];
-  toastController: any;
   constructor(
     private billService: BillsService,
     private loadingController: LoadingController,
     private modalController: ModalController,
     private userService: UserService,
-    private allertController: AlertController
+    private allertController: AlertController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
