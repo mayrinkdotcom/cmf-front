@@ -40,6 +40,15 @@ export class NotificationService {
     }
   }
 
+  async deleteNotification(notificationId: number){
+    const url = `${environment.BASE_URL}/notificacao/deletar/{id}`;
+    try{
+      const response = await this.httpClient.delete<NotificationResponse>(url, {params: {notificationId}}).toPromise();
+    }catch(error){
+      this.logError(error);
+    }
+  }
+
   logError(error: Error) {
     console.error('ERROR on notification-service:', error);
   }

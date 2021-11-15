@@ -58,6 +58,19 @@ export class BillsService {
     }
   }
 
+  async deleteBill(contaId: number): Promise<BillResponse>{
+    console.log(contaId);
+    const url = `${environment.BASE_URL}/conta/deletar/{id}?id=${contaId}`;
+
+    try{
+      const response = await this.httpClient.delete<BillResponse>(url).toPromise();
+      return response;
+    } catch(error){
+      this.logError(error);
+      throw error;
+    }
+  }
+
   logError(error: Error) {
     console.error('ERROR on bills-service:', error);
   }
