@@ -7,19 +7,19 @@ import { UserService } from 'src/app/services/user.service';
 import { CategoryResponse, DEFAULT_CATEGORY } from 'src/app/types/Category';
 import { Transaction, TransactionResponse } from 'src/app/types/Transaction';
 
-import { ProductService } from './../../../services/product.service';
-import { ProductResponse } from './../../../types/Product';
+import { ProductService } from '../../../services/product.service';
+import { ProductResponse } from '../../../types/Product';
 
 @Component({
-  selector: 'app-add-transaction',
-  templateUrl: './add-transaction.component.html',
-  styleUrls: ['./add-transaction.component.scss'],
+  selector: 'app-transaction-data',
+  templateUrl: './transaction-data.component.html',
+  styleUrls: ['./transaction-data.component.scss'],
 })
-export class AddTransactionComponent implements OnInit, AfterViewInit {
+export class TransactionDataComponent implements OnInit, AfterViewInit {
 
   @Input() transactionToEdit: TransactionResponse;
 
-  addTransactionForm: FormGroup = new FormGroup({
+  transactionDataForm: FormGroup = new FormGroup({
     category: new FormControl(null, [
       Validators.required,
     ]),
@@ -57,7 +57,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
 
     if (!!this.transactionToEdit) {
       console.log(this.transactionToEdit);
-      this.populateAddTransactionForm();
+      this.populatetransactionDataForm();
     }
   }
 
@@ -65,14 +65,14 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
     const newExpense: Transaction = {
       idCategoria: this.selectedCategory.idCategoria,
       ordem: this.selectedCategory.ordem,
-      tipoMovimentacao: this.addTransactionForm.get('description').value,
+      tipoMovimentacao: this.transactionDataForm.get('description').value,
       idUsuario: this.userService.getLoggedUser().idUsuario,
-      valor: this.addTransactionForm.get('value').value,
+      valor: this.transactionDataForm.get('value').value,
     };
 
-    if (this.addTransactionForm.get('hasLinkedProduct').value) {
-      newExpense.idProduto = this.addTransactionForm.get('productId').value;
-      newExpense.productQty = this.addTransactionForm.get('productQty').value;
+    if (this.transactionDataForm.get('hasLinkedProduct').value) {
+      newExpense.idProduto = this.transactionDataForm.get('productId').value;
+      newExpense.productQty = this.transactionDataForm.get('productQty').value;
     }
     this.saveTransaction(newExpense);
   }
@@ -111,7 +111,7 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
 
   closeModal(emitRefresh?: boolean) {
     if (emitRefresh) {
-      this.modalController.dismiss(this.addTransactionForm.value);
+      this.modalController.dismiss(this.transactionDataForm.value);
     } else {
       this.modalController.dismiss();
     }
@@ -127,19 +127,19 @@ export class AddTransactionComponent implements OnInit, AfterViewInit {
 
   async onChangeCategory() {
     this.selectedCategory = this.availableCategories
-      .find(category => category.idCategoria === this.addTransactionForm.get('category').value);
+      .find(category => category.idCategoria === this.transactionDataForm.get('category').value);
 
-    this.addTransactionForm.get('category').setValue(this.selectedCategory.idCategoria);
+    this.transactionDataForm.get('category').setValue(this.selectedCategory.idCategoria);
   }
 
-  populateAddTransactionForm() {
-    this.addTransactionForm.get('category').setValue(this.transactionToEdit.idCategoria);
-    this.addTransactionForm.get('description').setValue(this.transactionToEdit.tipoMovimentacao);
-    this.addTransactionForm.get('value').setValue(this.transactionToEdit.valor);
+  populatetransactionDataForm() {
+    this.transactionDataForm.get('category').setValue(this.transactionToEdit.idCategoria);
+    this.transactionDataForm.get('description').setValue(this.transactionToEdit.tipoMovimentacao);
+    this.transactionDataForm.get('value').setValue(this.transactionToEdit.valor);
     if (this.transactionToEdit.idProduto) {
-      this.addTransactionForm.get('hasLinkedProduct').setValue(true);
-      this.addTransactionForm.get('productId').setValue(this.transactionToEdit.idProduto);
-      this.addTransactionForm.get('productQty').setValue(this.transactionToEdit.productQty);
+      this.transactionDataForm.get('hasLinkedProduct').setValue(true);
+      this.transactionDataForm.get('productId').setValue(this.transactionToEdit.idProduto);
+      this.transactionDataForm.get('productQty').setValue(this.transactionToEdit.productQty);
     }
   }
 }

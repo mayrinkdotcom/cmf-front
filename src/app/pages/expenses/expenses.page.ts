@@ -4,7 +4,7 @@ import { TopbarService } from 'src/app/services/topbar.service';
 import { TransactionResponse } from 'src/app/types/Transaction';
 
 import { TransactionService } from './../../services/transaction.service';
-import { AddTransactionComponent } from './add-transaction/add-transaction.component';
+import { TransactionDataComponent } from './transaction-data/transaction-data.component';
 
 @Component({
   selector: 'app-expenses',
@@ -33,9 +33,9 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     this.refreshAvailableTransactions();
   }
 
-  async onClickAddTransaction() {
+  async onClickTransactionData() {
     const modal = await this.modalController.create({
-      component: AddTransactionComponent,
+      component: TransactionDataComponent,
       backdropDismiss: false,
     });
 
@@ -44,7 +44,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     const { data } = await modal.onWillDismiss();
 
     if (!!data) {
-      console.log('🚀 -> ExpensesPage -> onClickAddTransaction -> data', data);
+      console.log('🚀 -> ExpensesPage -> onClickTransactionData -> data', data);
       this.refreshAvailableTransactions();
     }
   }
@@ -52,7 +52,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
   async onEditTransaction(item: TransactionResponse) {
     console.log('🚀 -> ExpensesPage -> onEditTransaction -> item', item);
     const modal = await this.modalController.create({
-      component: AddTransactionComponent,
+      component: TransactionDataComponent,
       componentProps: { transactionToEdit: item },
       backdropDismiss: false,
     });
@@ -62,14 +62,14 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     const { data } = await modal.onWillDismiss();
 
     if (!!data) {
-      console.log('🚀 -> ExpensesPage -> onClickAddTransaction -> data', data);
+      console.log('🚀 -> ExpensesPage -> onClickTransactionData -> data', data);
       this.refreshAvailableTransactions();
     }
   }
 
   async editTransaction(editedTransaction: TransactionResponse) {
     const l = await this.loadingController.create({
-      message: 'Atualizando produto...',
+      message: 'Atualizando movimentação...',
     });
     l.present();
     try {
@@ -77,7 +77,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
       l.dismiss();
 
       const t = await this.toastController.create({
-        message: 'Produto atualizado com sucesso!',
+        message: 'Movimentação atualizada com sucesso!',
         duration: 4000,
         color: 'success',
       });
@@ -87,7 +87,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     } catch (error) {
       l.dismiss();
       const t = await this.toastController.create({
-        message: 'Falha na edição do produto, por favor verifique os dados e tente novamente.',
+        message: 'Falha na edição da movimentação, por favor verifique os dados e tente novamente.',
         duration: 4000,
         color: 'danger',
       });
@@ -117,7 +117,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
 
   async deleteTransaction(transactionId: number) {
     const l = await this.loadingController.create({
-      message: 'Excluindo produto...',
+      message: 'Excluindo movimentação...',
     });
 
     l.present();
@@ -126,7 +126,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
       l.dismiss();
       this.refreshAvailableTransactions();
       const t = await this.toastController.create({
-        message: 'Produto excluído com sucesso!',
+        message: 'Movimentação excluída com sucesso!',
         duration: 4000,
         color: 'success',
       });
@@ -134,7 +134,7 @@ export class ExpensesPage implements OnInit, AfterViewInit {
     } catch (error) {
       l.dismiss();
       const t = await this.toastController.create({
-        message: 'Falha na edição do produto, por favor verifique os dados e tente novamente.',
+        message: 'Falha na exclusão da movimentação, por favor verifique os dados e tente novamente.',
         duration: 4000,
         color: 'danger',
       });
