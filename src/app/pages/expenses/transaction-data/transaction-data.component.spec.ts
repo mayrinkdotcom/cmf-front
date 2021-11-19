@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AddTransactionComponent } from './add-transaction.component';
+import { TransactionDataComponent } from './transaction-data.component';
 
-describe('AddTransactionComponent', () => {
-  let component: AddTransactionComponent;
-  let fixture: ComponentFixture<AddTransactionComponent>;
+describe('TransactionDataComponent', () => {
+  let component: TransactionDataComponent;
+  let fixture: ComponentFixture<TransactionDataComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddTransactionComponent ],
+      declarations: [ TransactionDataComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddTransactionComponent);
+    fixture = TestBed.createComponent(TransactionDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
