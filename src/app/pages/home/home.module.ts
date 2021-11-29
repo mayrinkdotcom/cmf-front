@@ -9,6 +9,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { GraficoRendimentoComponent } from 'src/app/core/components/grafico-rendimento/grafico-rendimento.component';
+import { ComponentsModule } from 'src/app/core/components/components.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { GraficoRendimentoComponent } from 'src/app/core/components/grafico-rend
     ChartsModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    ComponentsModule,
   ],
   declarations: [HomePage, GraficoRendimentoComponent],
 })
