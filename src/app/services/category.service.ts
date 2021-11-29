@@ -1,24 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-
-import { Product, ProductResponse } from '../types/Product';
+import { Category, CategoryResponse } from '../types/Category';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class CategoryService {
 
   constructor(
     private http: HttpClient,
   ) { }
 
-  async getAvailableProducts(): Promise<ProductResponse[]> {
-    const url = `${environment.BASE_URL}/produto/buscar-todos`;
+  async getAvailableCategories(): Promise<CategoryResponse[]> {
+    const url = `${environment.BASE_URL}/categoria/buscar-todas`;
 
     try {
       const response = await this.http
-      .get<ProductResponse[]>(url)
+      .get<CategoryResponse[]>(url)
       .toPromise();
 
       return response;
@@ -28,14 +27,14 @@ export class ProductService {
     }
   }
 
-  async createProduct(newProduct: Product): Promise<ProductResponse> {
-    const url = `${environment.BASE_URL}/produto/cadastrar`;
+  async createCategory(newCategory: Category): Promise<CategoryResponse> {
+    const url = `${environment.BASE_URL}/categoria/cadastrar`;
 
-    const body: Product = newProduct;
+    const body: Category = newCategory;
 
     try {
       const response = await this.http
-      .post<ProductResponse>(url, body)
+      .post<CategoryResponse>(url, body)
       .toPromise();
 
       return response;
@@ -45,14 +44,15 @@ export class ProductService {
     }
   }
 
-  async updateProduct(editedProduct: Product) {
-    const url = `${environment.BASE_URL}/produto/atualizar`;
+  async updateCategory(editedCategory: Category) {
+    const url = `${environment.BASE_URL}/categoria/atualizar`;
 
-    const body: Product = editedProduct;
+    const body: Category = editedCategory;
+    console.log(body);
 
     try {
       const response = await this.http
-      .put<ProductResponse>(url, body)
+      .put<CategoryResponse>(url, body)
       .toPromise();
 
       return response;
@@ -62,8 +62,8 @@ export class ProductService {
     }
   }
 
-  async deleteProduct(productId: number) {
-    const url = `${environment.BASE_URL}/produto/deletar/{id}?id=${productId}`;
+  async deleteCategory(categoryId: number) {
+    const url = `${environment.BASE_URL}/categoria/deletar/{id}?id=${categoryId}`;
 
     try {
       const response = await this.http
@@ -78,6 +78,6 @@ export class ProductService {
   }
 
   logError(error: Error) {
-    console.error('ERROR on product-service:', error);
+    console.error('ERROR on category-service:', error);
   }
 }

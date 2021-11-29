@@ -5,12 +5,12 @@
 <ion-content>
   <ion-card>
     <ion-list>
-      <ion-item class="accordion-item" (click)="toggleTransactionModal()">
+      <ion-item class="accordion-item" (click)="toggleModalVisibility('add-transaction')">
         <ion-icon slot="start" name="add"></ion-icon>
         <ion-label>Adicionar nova movimentação</ion-label>
       </ion-item>
 
-      <ion-item class="accordion-item" (click)="toggleTransactionModal1()">
+      <ion-item class="accordion-item" (click)="toggleModalVisibility('add-bill')">
         <ion-icon slot="start" name="add"></ion-icon>
         <ion-label>Adicionar nova conta</ion-label>
       </ion-item>
@@ -19,6 +19,7 @@
         <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
         <ion-label>Ver meus gastos</ion-label>
       </ion-item>
+
       <ion-item>
         <div id="fees-content" class="hidden">
           <div class="fees-item">
@@ -61,8 +62,8 @@
   </ion-card>
 </ion-content>
 
-<div id="add-transaction" class="hidden" (click)="toggleTransactionModal()">
-  <ion-card class="add-transaction-card" (click)="preventDefault($event)">
+<div id="add-transaction" class="bills-modal hidden" (click)="toggleModalVisibility('add-transaction')">
+  <ion-card class="bills-modal-card" (click)="preventDefault($event)">
     <ion-card-title>
       <ion-label>Adicionar Movimentação</ion-label>
     </ion-card-title>
@@ -106,7 +107,7 @@
 
           <ion-row>
             <ion-col size="12">
-              <ion-button block color="light" (click)="toggleTransactionModal()">
+              <ion-button block color="light" (click)="toggleModalVisibility('add-transaction')">
                 Cancelar
               </ion-button>
               <ion-button block color="secondary" type="submit" (click)="onAddTransaction()" [disabled]="addTransaction.invalid">
@@ -120,58 +121,47 @@
   </ion-card>
 </div>
 
-<div id="add-transaction1" class="hidden" (click)="toggleTransactionModal1()">
-  <ion-card class="add-transaction-card" (click)="preventDefault($event)">
+<div id="add-bill" class="bills-modal hidden" (click)="toggleModalVisibility('add-bill')">
+  <ion-card class="bills-modal-card" (click)="preventDefault($event)">
     <ion-card-title>
       <ion-label>
         Registrar nova conta
       </ion-label>
     </ion-card-title>
     <ion-card-content>
-      <form [formGroup]="">
+      <form (ngSubmit)="onAddBill()">
         <ion-grid fixed>
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Descrição: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" required type="ion-text"></ion-input>
+              <ion-input name="descricao" class="light-input" required type="ion-text" [(ngModel)]="descricao"></ion-input>
             </ion-col>
             <ion-col size="6">
               <ion-label position="floating">Data de vencimento da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" required type="date"></ion-input>
+              <ion-input name="vencimento" class="light-input" required type="date" [(ngModel)]="vencimento"></ion-input>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Valor da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input class="light-input" placeholder="R$" type="number" required ></ion-input>
+              <ion-input name="Valor" class="light-input" placeholder="R$" type="number" required [(ngModel)]="valor"></ion-input>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col syze="10">
               <ion-label position="floating">Receber notificação de conta prestes a vencer</ion-label>
-              <ion-checkbox class="light-input" [value]="false" ></ion-checkbox>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col syze="6">
-              <ion-label position="floating">Lembrete(dias):</ion-label>
-              <ion-input class="light-input" type="number"></ion-input>
-            </ion-col>
-            <ion-col syze="6">
-              <ion-label position="floating">Lembrete(horas):</ion-label>
-              <ion-input class="light-input" type="number"></ion-input>
+              <ion-checkbox name="checkbox" [(ngModel)]="checkbox" class="light-input" [value]="false" ></ion-checkbox>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col size="12">
-              <ion-button block color="light" (click)="toggleTransactionModal1()">
+              <ion-button block color="light" (click)="toggleModalVisibility('add-bill')">
                 Cancelar
               </ion-button>
-              <ion-button block color="secondary" type="submit" (click)="onAddTransaction()" [disabled]="addTransaction.invalid">
+              <ion-button block color="secondary" type="submit" (click)="onAddBill()" [disabled]="false">
                 Confirmar
               </ion-button>
             </ion-col>
@@ -181,3 +171,8 @@
     </ion-card-content>
   </ion-card>
 </div>
+
+<ion-button id="modalBill" (click)="onClickViewBill(bill)" class="toggleAccordion">
+  <ion-icon slot="start" name="chevron-down-outline"></ion-icon>
+  <ion-label>Ver minhas contas</ion-label>
+</ion-button>
