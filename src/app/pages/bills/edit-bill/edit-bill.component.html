@@ -2,7 +2,7 @@
   <ion-card class="bills-modal-card" >
     <ion-card-title>
       <ion-label>
-        Registrar nova conta
+        Editar nova conta
       </ion-label>
     </ion-card-title>
     <ion-card-content>
@@ -11,25 +11,25 @@
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Descrição: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input name="descricao" class="light-input" required type="ion-text" [(ngModel)]="descricao"></ion-input>
+              <ion-input name="descricao" class="light-input" required type="ion-text" [(ngModel)]="bill.tipoConta"></ion-input>
             </ion-col>
             <ion-col size="6">
               <ion-label position="floating">Data de vencimento da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input name="vencimento" class="light-input" required type="date" [(ngModel)]="vencimento"></ion-input>
+              <ion-input name="vencimento" class="light-input" required type="date" [(ngModel)]="bill.dataVencimento"></ion-input>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col size="6">
               <ion-label position="floating">Valor da conta: <ion-text color="danger">*</ion-text></ion-label>
-              <ion-input name="Valor" class="light-input" placeholder="R$" type="number" required [(ngModel)]="valor"></ion-input>
+              <ion-input name="Valor" class="light-input" placeholder="R$" type="number" required [(ngModel)]="bill.valorConta"></ion-input>
             </ion-col>
           </ion-row>
 
           <ion-row>
             <ion-col syze="10">
-              <ion-label position="floating">Receber notificação de conta prestes a vencer</ion-label>
-              <ion-checkbox name="checkbox" [(ngModel)]="checkbox"  (click)="salvarDataDeNotificacao()" class="light-input" [value]="false" ></ion-checkbox>
+              <ion-label position="floating">Receber notificação de conta prestes a vencer </ion-label>
+              <ion-checkbox name="checkbox" [(ngModel)]="bill.receberNotificacao" class="light-input" [value]="false" ></ion-checkbox>
             </ion-col>
           </ion-row>
 
@@ -38,7 +38,7 @@
               <ion-button block color="light"  (click)="closeEditModal()">
                 Cancelar
               </ion-button>
-              <ion-button block color="secondary" type="submit"  [disabled]="false">
+              <ion-button block color="secondary" type="submit" (click)="onUpdateBill()" [disabled]="false">
                 Confirmar
               </ion-button>
             </ion-col>

@@ -49,6 +49,21 @@ export class NotificationService {
     }
   }
 
+  async updateNotification(updatedNotification: Notification){
+    const url = `${environment.BASE_URL}/notificacao/atualizar`;
+    try{
+      const body: Notification = updatedNotification;
+      const response = await this.httpClient
+      .put<NotificationResponse>(url, body)
+      .toPromise();
+
+      return response;
+    }catch(error){
+      this.logError(error);
+      throw error;
+    }
+  }
+
   logError(error: Error) {
     console.error('ERROR on notification-service:', error);
   }

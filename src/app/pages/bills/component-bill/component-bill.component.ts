@@ -37,7 +37,10 @@ export class ComponentBillComponent implements OnInit {
       backdropDismiss: true,
     });
     m.present();
-    this.refreshAvailableBills();
+    const reload = await m.onWillDismiss();
+    if(reload){
+      this.refreshAvailableBills();
+    }
   }
 
   async onDeleteBill(item: BillResponse) {

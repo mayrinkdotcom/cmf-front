@@ -29,6 +29,24 @@ export class BillsService {
     }
   }
 
+  async updateBill(editedBill: Bill) {
+    const url = `${environment.BASE_URL}/conta/atualizar`;
+
+    const body: Bill = editedBill;
+    console.log(body);
+
+    try {
+      const response = await this.httpClient
+      .put<BillResponse>(url, body)
+      .toPromise();
+
+      return response;
+    } catch (error) {
+      this.logError(error);
+      throw error;
+    }
+  }
+
   async getAllUserBills(userId: number): Promise<BillResponse[]> {
     const url = `${environment.BASE_URL}/conta/buscar-por-usuario/{usuarioId}?usuarioId=${userId}`;
 
