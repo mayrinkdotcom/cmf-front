@@ -8,8 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
-import { ComponentsModule } from 'src/app/core/components/components.module';
 import { GraficoRendimentoComponent } from 'src/app/core/components/grafico-rendimento/grafico-rendimento.component';
+import { ComponentsModule } from 'src/app/core/components/components.module';
 
 @NgModule({
   imports: [
