@@ -56,6 +56,7 @@ export class BillsPage implements OnInit {
   valor: number;
   checkbox: boolean;
   dataNotificacao: Date;
+  idNotificacao: number;
 
   userLogged: UserResponse;
 
@@ -85,7 +86,7 @@ export class BillsPage implements OnInit {
   async onClickViewBill(bill: BillResponse){
     const modalBill = await this.modalController.create({
       component: ComponentBillComponent,
-      componentProps: {bill},
+      componentProps: {bill, idNotificacao: this.idNotificacao},
       backdropDismiss: true,
     });
 
@@ -225,45 +226,31 @@ export class BillsPage implements OnInit {
     }
   }
 
-  async salvarDataDeNotificacao(){
-    if(!this.checkbox){
-      const alert = await this.allertController.create({
-        message: 'Digite a data para receber a notificação',
-        backdropDismiss: false,
-        inputs: [
-          {
-            name: 'notificacao',
-            type: 'date'
-          }
-        ],
-        buttons: [
-          {
-            text: 'Cancelar',
-            handler: () => {alertController.dismiss();
-              this.checkbox = false;
-            },
-          },
-          {
-            text: 'Confirmar',
-             handler: (data: Date) => this.dataNotificacao = data
-          }
-        ]
-      });
+   diaAnterior(){
+      const lembrete = new Date(this.vencimento);
+      const diaDoMes = lembrete.getUTCDate()-1;
+      const dataLembrete = new Date(lembrete.getUTCFullYear(), lembrete.getUTCMonth(), diaDoMes);
+      console.log(dataLembrete.getUTCFullYear(), dataLembrete.getUTCMonth(), dataLembrete.getUTCDate());
+      const outro = `${dataLembrete.getUTCFullYear()}-${dataLembrete.getUTCMonth()}-${dataLembrete.getUTCDate()}`;
+      console.log('Dia anterior');
+      console.log(outro);
 
-      alert.present();
-    }
+      return outro.toString();
   }
 
 
   async addNotification(idConta: number) {
     try {
-      const lembrete = this.vencimento.toString();
+      const lembrete = this.diaAnterior();
+      console.log(lembrete);
       const newNotification: Notification = {
         idConta,
         idUsuario: this.userLogged.idUsuario,
         dataLembrete: lembrete
       };
       const resNotificationCreated = await this.notificationService.createNotification(newNotification);
+      this.idNotificacao = resNotificationCreated.idNotificacao;
+      console.log(resNotificationCreated.idNotificacao);
       console.log('🚀 -> BillsPage -> addNotification -> resNotificationCreated', resNotificationCreated);
     } catch (error) {
       console.error('ERROR on addNotification', error);
