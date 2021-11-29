@@ -1,8 +1,11 @@
+import { ModalController, PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { BillsService } from 'src/app/services/bills.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UserService } from 'src/app/services/user.service';
 import { NotificationResponse } from 'src/app/types/Notification';
+import { ComponentBillComponent } from 'src/app/pages/bills/component-bill/component-bill.component';
 
 @Component({
   selector: 'app-popover',
@@ -20,6 +23,9 @@ export class PopoverComponent implements OnInit {
     private notificationService: NotificationService,
     private userService: UserService,
     private billsService: BillsService,
+    private popoverController: PopoverController,
+    private router: Router,
+    private modalController: ModalController,
   ) { }
 
   ngOnInit() {
@@ -51,8 +57,15 @@ export class PopoverComponent implements OnInit {
     }
   }
 
-  onClickOpenNotification() {
-    console.log('Not implemented yet');
+  async onClickOpenNotification() {
+    // this.router.navigate(['/bills/bills-list']);
+    const modalBill = await this.modalController.create({
+      component: ComponentBillComponent,
+      backdropDismiss: true,
+    });
+
+    modalBill.present();
+    this.popoverController.dismiss();
   }
 
 }
