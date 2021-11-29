@@ -9,6 +9,7 @@ import { BillsPageRoutingModule } from './bills-routing.module';
 import { BillsPage } from './bills.page';
 import { ComponentsModule } from 'src/app/core/components/components.module';
 import { ComponentBillComponent } from './component-bill/component-bill.component';
+import { EditBillComponent } from './edit-bill/edit-bill.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { ComponentBillComponent } from './component-bill/component-bill.componen
     ComponentsModule,
     ReactiveFormsModule
   ],
-  declarations: [BillsPage, ComponentBillComponent]
+  declarations: [BillsPage, ComponentBillComponent, EditBillComponent]
 })
 export class BillsPageModule {}

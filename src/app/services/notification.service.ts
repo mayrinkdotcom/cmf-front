@@ -40,6 +40,30 @@ export class NotificationService {
     }
   }
 
+  async deleteNotification(notificationId: number){
+    const url = `${environment.BASE_URL}/notificacao/deletar/{id}`;
+    try{
+      const response = await this.httpClient.delete<NotificationResponse>(url, {params: {notificationId}}).toPromise();
+    }catch(error){
+      this.logError(error);
+    }
+  }
+
+  async updateNotification(updatedNotification: Notification){
+    const url = `${environment.BASE_URL}/notificacao/atualizar`;
+    try{
+      const body: Notification = updatedNotification;
+      const response = await this.httpClient
+      .put<NotificationResponse>(url, body)
+      .toPromise();
+
+      return response;
+    }catch(error){
+      this.logError(error);
+      throw error;
+    }
+  }
+
   logError(error: Error) {
     console.error('ERROR on notification-service:', error);
   }

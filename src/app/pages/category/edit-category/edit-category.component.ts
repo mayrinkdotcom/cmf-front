@@ -2,7 +2,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { CategoryService } from 'src/app/services/category.service';
-import { Category, CategoryResponse } from 'src/app/types/Category';
+import { Category, CategoryResponse, DEFAULT_CATEGORY } from 'src/app/types/Category';
 
 @Component({
   selector: 'app-edit-category',
@@ -11,7 +11,9 @@ import { Category, CategoryResponse } from 'src/app/types/Category';
 })
 export class EditCategoryComponent implements OnInit {
 
-  @Input() idCategoria;
+  @Input() categoria: CategoryResponse = {
+    ...DEFAULT_CATEGORY
+  };
   categories: CategoryResponse[] = [];
 
   constructor(
@@ -23,9 +25,6 @@ export class EditCategoryComponent implements OnInit {
 
   ngOnInit() { }
 
-  nomeCategoria: string;
-  ordemCategoria: 'ENTRADA' | 'SAIDA';
-
   async editCategory() {
     const l = await this.loadingController.create({
       message: 'Atualizando categoria...',
@@ -34,9 +33,9 @@ export class EditCategoryComponent implements OnInit {
 
     try {
       const newCategory: CategoryResponse = {
-        idCategoria: this.idCategoria,
-        nome: this.nomeCategoria,
-        ordem: this.ordemCategoria
+        idCategoria: this.categoria.idCategoria,
+        nome: this.categoria.nome,
+        ordem: this.categoria.ordem
       };
       const response = await this.categoryService.updateCategory(newCategory);
       l.dismiss();
@@ -68,8 +67,8 @@ export class EditCategoryComponent implements OnInit {
   }
 
   setOrderValue($event) {
-    this.ordemCategoria = $event.target.value;
-    console.log(this.ordemCategoria);
+    this.categoria.ordem = $event.target.value;
+    console.log(this.categoria.ordem);
   }
 
   closeModal() {

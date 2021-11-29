@@ -22,6 +22,7 @@ export class CategoryPage implements OnInit, AfterViewInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private modalController: ModalController,
+    private allertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -53,7 +54,7 @@ export class CategoryPage implements OnInit, AfterViewInit {
   }
 
    async onDeleteCategory(item: CategoryResponse) {
-    const alert = await this.toastController.create({
+    const alert = await this.allertController.create({
       header: 'Atenção!',
       message: 'Deseja realmente excluir ' + item.nome + '? Essa ação não pode ser desfeita!',
       buttons: [

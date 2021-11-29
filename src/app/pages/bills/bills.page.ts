@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { BillsService } from 'src/app/services/bills.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ProductService } from 'src/app/services/product.service';
@@ -14,6 +14,7 @@ import { ProductResponse } from 'src/app/types/Product';
 import { DEFAULT_TRANSACTION, Transaction } from 'src/app/types/Transaction';
 import { UserResponse } from 'src/app/types/User';
 import { ComponentBillComponent } from './component-bill/component-bill.component';
+import { alertController } from '@ionic/core';
 
 @Component({
   selector: 'app-bills',
@@ -54,6 +55,8 @@ export class BillsPage implements OnInit {
   vencimento: Date;
   valor: number;
   checkbox: boolean;
+  dataNotificacao: Date;
+  idNotificacao: number;
 
   userLogged: UserResponse;
 
@@ -68,6 +71,7 @@ export class BillsPage implements OnInit {
     private notificationService: NotificationService,
     private topbarService: TopbarService,
     private modalController: ModalController,
+    private allertController: AlertController
   ) { }
 
   async ngOnInit() {
@@ -82,7 +86,7 @@ export class BillsPage implements OnInit {
   async onClickViewBill(bill: BillResponse){
     const modalBill = await this.modalController.create({
       component: ComponentBillComponent,
-      componentProps: {bill},
+      componentProps: {bill, idNotificacao: this.idNotificacao},
       backdropDismiss: true,
     });
 
@@ -223,14 +227,31 @@ export class BillsPage implements OnInit {
     }
   }
 
+   diaAnterior(){
+      const lembrete = new Date(this.vencimento);
+      const diaDoMes = lembrete.getUTCDate()-1;
+      const dataLembrete = new Date(lembrete.getUTCFullYear(), lembrete.getUTCMonth(), diaDoMes);
+      console.log(dataLembrete.getUTCFullYear(), dataLembrete.getUTCMonth(), dataLembrete.getUTCDate());
+      const outro = `${dataLembrete.getUTCFullYear()}-${dataLembrete.getUTCMonth()}-${dataLembrete.getUTCDate()}`;
+      console.log('Dia anterior');
+      console.log(outro);
+
+      return outro.toString();
+  }
+
+
   async addNotification(idConta: number) {
     try {
+      const lembrete = this.diaAnterior();
+      console.log(lembrete);
       const newNotification: Notification = {
         idConta,
         idUsuario: this.userLogged.idUsuario,
-        dataLembrete: this.vencimento
+        dataLembrete: lembrete
       };
       const resNotificationCreated = await this.notificationService.createNotification(newNotification);
+      this.idNotificacao = resNotificationCreated.idNotificacao;
+      console.log(resNotificationCreated.idNotificacao);
       console.log('🚀 -> BillsPage -> addNotification -> resNotificationCreated', resNotificationCreated);
     } catch (error) {
       console.error('ERROR on addNotification', error);
