@@ -76,6 +76,4 @@ export class GraficoRendimentoComponent implements OnInit {
 
   constructor(private transactionService: TransactionService,) { }
 
-
-
 }
