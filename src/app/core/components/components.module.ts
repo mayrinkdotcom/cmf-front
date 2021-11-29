@@ -1,3 +1,4 @@
+import { PrintButtonComponent } from './print-button/print-button.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegisterCardComponent } from './register-card/register-card.component';
@@ -15,8 +16,9 @@ import { PopoverComponent } from './popover/popover.component';
     TopbarComponent,
     NotificationComponent,
     PopoverComponent,
+    PrintButtonComponent,
   ],
   imports: [CommonModule, IonicModule, ReactiveFormsModule],
-  exports: [RegisterCardComponent, TopbarComponent],
+  exports: [RegisterCardComponent, TopbarComponent, PrintButtonComponent],
 })
 export class ComponentsModule {}
