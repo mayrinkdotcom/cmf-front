@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets } from 'chart.js';
+import { TransactionService } from 'src/app/services/transaction.service';
 import { Color, Label } from 'ng2-charts';
 
 @Component({
@@ -14,20 +15,21 @@ export class GraficoRendimentoComponent implements OnInit {
     { data: [57, 50, 75, 87, 43, 46, 37, 48, 67, 56, 70, 50], label: 'Lucro bruto' },
     { data: [57, 50, 75, 87, 43, 46, 37, 48, 67, 56, 70, 50], label: 'Lucro liquido' },
   ];
-  
-  public lineChartLabels: Label[] = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 
-  'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    
+
+  public lineChartLabels: Label[] = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+    'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
   public lineChartOptions = {
     responsive: true,
   };
-     
+
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [];
-    
+
   constructor() { }
-   
+
   ngOnInit() {
   }
+
 }

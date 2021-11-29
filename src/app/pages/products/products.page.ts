@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { TopbarService } from 'src/app/services/topbar.service';
-import { DEFAULT_PRODUCT, Product, ProductResponse } from 'src/app/types/Product';
+import { Product, ProductResponse } from 'src/app/types/Product';
 
 @Component({
   selector: 'app-products',
